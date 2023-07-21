@@ -46,7 +46,23 @@ export default {
       });
     });
 
-    const updateDoctorInformation = () => {
+    const validateEmail = () => {
+      const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+      if (!emailRegex.test(doctorForm.value.email_address)) {
+        showNotification(
+          $quasar,
+          "negative",
+          "Please enter a valid email address.",
+          200
+        );
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+    const updateDoctorInformation = async () => {
       const isDoctorFormUpdated = compareInformation(
         doctorForm,
         doctorFields,
@@ -56,16 +72,22 @@ export default {
 
       if (isDoctorFormUpdated) {
         if (isDoctorFormValid) {
-          updateData("Doctor.php", doctorForm.value, doctor, "doctor_id").then(
-            (response) => {
+          const isEmailValid = validateEmail();
+          if (isEmailValid) {
+            updateData(
+              "Doctor.php",
+              doctorForm.value,
+              doctor,
+              "doctor_id"
+            ).then((response) => {
               if (response.status === "failed") {
                 showNotification($quasar, "negative", response.data, 200);
               } else {
                 showNotification($quasar, "positive", response.data, 200);
                 trigger.value.showUpdateDoctorModelDialog = false;
               }
-            }
-          );
+            });
+          }
         } else {
           showNotification($quasar, "negative", "Required field.", 200);
         }
