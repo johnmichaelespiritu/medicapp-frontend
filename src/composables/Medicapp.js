@@ -101,10 +101,7 @@ export const filterData = (path, val, update, abort) => {
     };
     update(() => {
       getSearchResult(payload).then((response) => {
-        if (
-          payload.path ===
-          "http://localhost/medicapp/medicapp-backend/Doctor.php"
-        ) {
+        if (response.search === "doctor") {
           searchDoctorContents.value = response.data;
         } else {
           searchContents.value = response.data;
