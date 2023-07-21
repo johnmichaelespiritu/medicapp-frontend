@@ -1,0 +1,27 @@
+.email-verification-card {
+  width: 300px;
+  padding: 15px 5px 0;
+  margin: 0 auto;
+  background-color: rgb(20, 34, 73);
+}
+.lower-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding-top: 10px;
+  text-align: center;
+  padding-bottom: 30px;
+}
+.send-button,
+.cancel-button {
+  width: 125px;
+  background-color: rgb(249, 152, 48);
+}
+
+@media (max-width: 768px) {
+  .email-verification-card,
+  .send-button,
+  .cancel-button {
+    width: 100%;
+  }
+}

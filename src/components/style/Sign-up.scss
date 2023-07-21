@@ -1,0 +1,39 @@
+.signup-card {
+  width: 300px;
+  background-color: rgb(20, 34, 73);
+  padding: 15px 5px 0;
+  margin: 0 auto;
+}
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.lower-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding-top: 10px;
+  text-align: center;
+  padding-bottom: 30px;
+}
+.username-input.error,
+.email-input.error,
+.password-input.error,
+.confirm-password-input.error {
+  border: 2px solid #c10015;
+  border-radius: 6px;
+}
+.register-button,
+.cancel-button {
+  width: 100%;
+  background-color: rgb(249, 152, 48);
+}
+
+@media (max-width: 768px) {
+  .signup-card,
+  .register-button,
+  .cancel-button {
+    width: 100%;
+  }
+}
