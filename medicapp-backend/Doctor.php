@@ -14,7 +14,7 @@ class Doctor extends DB
             $search_doctor = $this->connection->join('tbl_user_account u', 'u.user_id=d.user_id', 'INNER')->where('d.user_id', $_SESSION['user_id'])->where("(doctor_name like '" . $_GET['searchKeyword'] . "%')")->where('d.deleted_at', null, 'IS')->get('tbl_doctor_information d', null, $columns);
 
             if ($search_doctor)
-                echo json_encode(array('method' => 'GET', 'status' => 'success', 'data' => $search_doctor));
+                echo json_encode(array('method' => 'GET', 'status' => 'success', 'data' => $search_doctor, 'search' => 'doctor'));
             else 
                 echo json_encode(array('method' => 'GET', 'status' => 'failed', 'data' => $this->connection->getLastError()));
         } else {
