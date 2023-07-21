@@ -18,6 +18,7 @@ import {
   specificDoctorInformation,
   filterData,
   searchDoctorContents,
+  searchContents,
 } from "src/composables/Medicapp.js";
 
 export default {
