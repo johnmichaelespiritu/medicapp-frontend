@@ -1,7 +1,7 @@
 import { ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
-import AddPatient from "src/pages/Patient Information/components/AddPatient.vue";
-import UpdatePatient from "src/pages/Patient Information/components/UpdatePatient.vue";
+import AddPatient from "src/pages/Patient-Information/components/AddPatient.vue";
+import UpdatePatient from "src/pages/Patient-Information/components/UpdatePatient.vue";
 import {
   showNotification,
   useSelectedRecords,

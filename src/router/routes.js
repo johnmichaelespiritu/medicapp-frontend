@@ -5,8 +5,8 @@ import EmailVerification from "src/components/main/EmailVerification.vue";
 import ForgotPassword from "src/components/main/ForgotPassword.vue";
 import DashboardInformation from "src/pages/Dashboard/main/Dashboard-Information.vue";
 import DoctorInformation from "src/pages/Doctor-Information/main/Doctor-Information.vue";
-import PatientInformation from "src/pages/Patient Information/main/Patient-Information.vue";
-import ConsultationInformation from "src/pages/Consultation Information/main/Consultation-Information.vue";
+import PatientInformation from "src/pages/Patient-Information/main/Patient-Information.vue";
+import ConsultationInformation from "src/pages/Consultation-Information/main/Consultation-Information.vue";
 
 const routes = [
   {
