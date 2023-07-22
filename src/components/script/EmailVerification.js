@@ -12,6 +12,7 @@ export default {
     const $quasar = useQuasar();
 
     const emailVerificationCode = ref({
+      action: "verify_code",
       user_email_purpose: userEmailVerificationPurpose.value,
       user_id: userID.value,
       verification_code: null,
@@ -27,28 +28,18 @@ export default {
       } else {
         updateFunction(emailVerificationCode.value).then((response) => {
           if (response.status === "failed") {
-            showNotification($quasar, "negative", response.data, 200);
+            showNotification($quasar, "negative", response.message, 200);
           } else {
-            if (response.data === "sign_up" || response.data === "log_in") {
-              showNotification(
-                $quasar,
-                "positive",
-                "You have successfully verified account.",
-                200
-              );
-              trigger.value.showLoginForm = true;
-              window.location.href = "http://localhost:9000/#/";
-            } else {
-              showNotification(
-                $quasar,
-                "positive",
-                "You have successfully verified account. You may now change your password.",
-                200
-              );
+            if (response.data === "forgot_password") {
+              showNotification($quasar, "positive", response.message, 200);
               trigger.value.showForgotPasswordEmailForm = false;
               trigger.value.showForgotPasswordPasswordForm = true;
               userEmailVerificationPurpose.value = "change_password";
               window.location.href = "http://localhost:9000/#/forgotpassword";
+            } else {
+              showNotification($quasar, "positive", response.message, 200);
+              trigger.value.showLoginForm = true;
+              window.location.href = "http://localhost:9000/#/";
             }
           }
         });
