@@ -22,6 +22,7 @@ export default {
     const user_confirm_password = ref(null);
 
     const registerForm = ref({
+      action: "signup",
       user_name: null,
       user_email: null,
       user_password: null,
@@ -119,14 +120,9 @@ export default {
 
         loginFunction(registerForm.value).then((response) => {
           if (response.status === "failed") {
-            showNotification($quasar, "negative", response.data, 200);
+            showNotification($quasar, "negative", response.message, 200);
           } else {
-            showNotification(
-              $quasar,
-              "info",
-              "Register successfully. Please verify your email account.",
-              200
-            );
+            showNotification($quasar, "info", response.message, 200);
             resetAddAccountForm();
             userID.value = response.data;
             userEmailVerificationPurpose.value = "sign_up";
