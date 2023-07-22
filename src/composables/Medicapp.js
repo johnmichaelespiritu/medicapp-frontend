@@ -219,7 +219,7 @@ export const logoutFunction = (payload) => {
 export const updateFunction = (payload) => {
   return new Promise((resolve, reject) => {
     axios
-      .put(`${baseBackendURL}Login.php`, {
+      .post(`${baseBackendURL}Login.php`, {
         payload,
       })
       .then((response) => {
