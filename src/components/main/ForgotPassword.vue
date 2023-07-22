@@ -19,7 +19,7 @@
           color="orange-8"
           ref="userEmailRef"
           placeholder="Enter your email"
-          v-model="user_email"
+          v-model="resendVerificationCodeForm.user_email"
           :rules="rules"
         >
           <template v-slot:prepend>
