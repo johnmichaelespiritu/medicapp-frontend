@@ -16,6 +16,7 @@ export default {
     const userPasswordRef = ref(null);
 
     const loginForm = ref({
+      action: "login",
       user_email: null,
       user_password: null,
     });
@@ -75,30 +76,20 @@ export default {
         loginFunction(loginForm.value).then((response) => {
           if (response.status === "warning") {
             setTimeout(() => {
-              showNotification(
-                $quasar,
-                "info",
-                "Please verify your email account before signing in.",
-                200
-              );
+              showNotification($quasar, "info", response.message, 200);
               resetLoginForm();
               trigger.value.showLoginForm = false;
               userID.value = response.data;
-              userEmailVerificationPurpose.value = "log_in";
+              userEmailVerificationPurpose.value = "login";
               window.location.href =
                 "http://localhost:9000/#/emailverification";
             }, 1000);
           } else if (response.status === "failed") {
             userEmailRef.value.$el.classList.add("error");
             userPasswordRef.value.$el.classList.add("error");
-            showNotification(
-              $quasar,
-              "negative",
-              "Incorrect email or password.",
-              200
-            );
+            showNotification($quasar, "negative", response.message, 200);
           } else {
-            showNotification($quasar, "positive", "Sign in successfully.", 200);
+            showNotification($quasar, "positive", response.message, 200);
             setTimeout(() => {
               window.location.href =
                 "http://localhost:9000/#/home/dashboard-information";
