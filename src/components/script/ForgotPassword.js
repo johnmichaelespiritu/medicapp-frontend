@@ -1,6 +1,6 @@
 import { ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
-import { showNotification, resetForm, rules } from "src/composables/Utils.js";
+import { showNotification, rules } from "src/composables/Utils.js";
 import {
   trigger,
   userEmail,
@@ -15,15 +15,19 @@ export default {
     const isCreatePassword = ref(true);
     const isConfirmPassword = ref(true);
 
-    const user_email = ref(null);
     const user_confirm_password = ref(null);
 
     const userEmailRef = ref(null);
     const userPasswordRef = ref(null);
     const userConfirmPasswordRef = ref(null);
 
+    const resendVerificationCodeForm = ref({
+      action: "resend_verification_code",
+      user_email: null,
+    });
+
     const userUpdatePasswordForm = ref({
-      user_email_purpose: userEmailVerificationPurpose.value,
+      action: "change_password",
       user_id: userID.value,
       user_password: null,
     });
@@ -47,7 +51,9 @@ export default {
           200
         );
         return false;
-      } else if (!emailRegex.test(user_email.value)) {
+      } else if (
+        !emailRegex.test(resendVerificationCodeForm.value.user_email)
+      ) {
         userEmailRef.value.$el.classList.add("error");
         showNotification(
           $quasar,
@@ -108,21 +114,11 @@ export default {
       const isForgotPasswordEmailFormValid = validateForgotPasswordEmailForm();
 
       if (isForgotPasswordEmailFormValid) {
-        updateFunction(user_email.value).then((response) => {
+        updateFunction(resendVerificationCodeForm.value).then((response) => {
           if (response.status === "failed") {
-            showNotification(
-              $quasar,
-              "negative",
-              "Email is not existing.",
-              200
-            );
+            showNotification($quasar, "negative", response.message, 200);
           } else {
-            showNotification(
-              $quasar,
-              "positive",
-              "Email is existing. Please verify your email address.",
-              200
-            );
+            showNotification($quasar, "positive", response.message, 200);
             userID.value = response.user_id;
             userEmail.value = response.user_email;
             userEmailVerificationPurpose.value = "forgot_password";
@@ -139,9 +135,9 @@ export default {
       if (isForgotPasswordPasswordFormValid) {
         updateFunction(userUpdatePasswordForm.value).then((response) => {
           if (response.status === "failed") {
-            showNotification($quasar, "negative", response.data, 200);
+            showNotification($quasar, "negative", response.message, 200);
           } else {
-            showNotification($quasar, "positive", response.data, 200);
+            showNotification($quasar, "positive", response.message, 200);
             trigger.value.showLoginForm = true;
             window.location.href = "http://localhost:9000/#/";
           }
@@ -150,7 +146,7 @@ export default {
     };
 
     const resetForgotPasswordForm = () => {
-      user_email.value = null;
+      resendVerificationCodeForm.value.user_email = null;
       userUpdatePasswordForm.value.user_password = null;
       user_confirm_password.value = null;
 
@@ -186,7 +182,7 @@ export default {
       isConfirmPassword,
       trigger,
       userUpdatePasswordForm,
-      user_email,
+      resendVerificationCodeForm,
       user_confirm_password,
       userEmailRef,
       userPasswordRef,
