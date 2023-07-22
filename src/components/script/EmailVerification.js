@@ -26,18 +26,18 @@ export default {
       if (verificationCodeRef.value.hasError) {
         showNotification($quasar, "negative", "Required field.", 200);
       } else {
-        updateFunction(emailVerificationCode.value).then((response) => {
-          if (response.status === "failed") {
-            showNotification($quasar, "negative", response.message, 200);
+        updateFunction(emailVerificationCode.value).then((data) => {
+          if (data.status === "failed") {
+            showNotification($quasar, "negative", data.message, 200);
           } else {
-            if (response.data === "forgot_password") {
-              showNotification($quasar, "positive", response.message, 200);
+            if (data.data === "forgot_password") {
+              showNotification($quasar, "positive", data.message, 200);
               trigger.value.showForgotPasswordEmailForm = false;
               trigger.value.showForgotPasswordPasswordForm = true;
               userEmailVerificationPurpose.value = "change_password";
               window.location.href = "http://localhost:9000/#/forgotpassword";
             } else {
-              showNotification($quasar, "positive", response.message, 200);
+              showNotification($quasar, "positive", data.message, 200);
               trigger.value.showLoginForm = true;
               window.location.href = "http://localhost:9000/#/";
             }

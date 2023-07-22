@@ -37,7 +37,6 @@ export const setActiveMenu = (title) => {
   localStorage.setItem("activeMenu", title);
 };
 
-// Retrieve active menu item from local storage
 const activeMenu = localStorage.getItem("activeMenu");
 if (activeMenu) {
   trigger.value.activeMenu = activeMenu;
@@ -57,24 +56,23 @@ export default defineComponent({
       trigger.value.leftDrawerOpen = !trigger.value.leftDrawerOpen;
     };
 
-    // let setActiveMenu = (title) => {
-    //   trigger.value.activeMenu = title;
-    //   localStorage.setItem("activeMenu", title);
-    // };
-
-    // // Retrieve active menu item from local storage
-    // let activeMenu = localStorage.getItem("activeMenu");
-    // if (activeMenu) {
-    //   trigger.value.activeMenu = activeMenu;
-    // }
+    const logout = {
+      action: "logout",
+    };
 
     const logOut = () => {
-      logoutFunction("logout");
-      setTimeout(() => {
-        showNotification($quasar, "positive", "Sign out successfully.", 200);
-        window.location.href = "http://localhost:9000/#/";
-        // window.history.replaceState(null, "", window.location.href);
-      }, 1000);
+      logoutFunction(logout).then((data) => {
+        if (data.status === "failed") {
+          setTimeout(() => {
+            showNotification($quasar, "failed", data.message, 200);
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            showNotification($quasar, "positive", data.message, 200);
+            window.location.href = "http://localhost:9000/#/";
+          }, 1000);
+        }
+      });
     };
 
     onMounted(() => {

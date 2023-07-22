@@ -73,23 +73,23 @@ export default {
         userEmailRef.value.$el.classList.remove("error");
         userPasswordRef.value.$el.classList.remove("error");
 
-        loginFunction(loginForm.value).then((response) => {
-          if (response.status === "warning") {
+        loginFunction(loginForm.value).then((data) => {
+          if (data.status === "warning") {
             setTimeout(() => {
-              showNotification($quasar, "info", response.message, 200);
+              showNotification($quasar, "info", data.message, 200);
               resetLoginForm();
               trigger.value.showLoginForm = false;
-              userID.value = response.data;
+              userID.value = data.data;
               userEmailVerificationPurpose.value = "login";
               window.location.href =
                 "http://localhost:9000/#/emailverification";
             }, 1000);
-          } else if (response.status === "failed") {
+          } else if (data.status === "failed") {
             userEmailRef.value.$el.classList.add("error");
             userPasswordRef.value.$el.classList.add("error");
-            showNotification($quasar, "negative", response.message, 200);
+            showNotification($quasar, "negative", data.message, 200);
           } else {
-            showNotification($quasar, "positive", response.message, 200);
+            showNotification($quasar, "positive", data.message, 200);
             setTimeout(() => {
               window.location.href =
                 "http://localhost:9000/#/home/dashboard-information";

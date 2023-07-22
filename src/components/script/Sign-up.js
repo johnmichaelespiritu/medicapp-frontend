@@ -118,13 +118,13 @@ export default {
         userPasswordRef.value.$el.classList.remove("error");
         userConfirmPasswordRef.value.$el.classList.remove("error");
 
-        loginFunction(registerForm.value).then((response) => {
-          if (response.status === "failed") {
-            showNotification($quasar, "negative", response.message, 200);
+        loginFunction(registerForm.value).then((data) => {
+          if (data.status === "failed") {
+            showNotification($quasar, "negative", data.message, 200);
           } else {
-            showNotification($quasar, "info", response.message, 200);
+            showNotification($quasar, "info", data.message, 200);
             resetAddAccountForm();
-            userID.value = response.data;
+            userID.value = data.data;
             userEmailVerificationPurpose.value = "sign_up";
             trigger.value.showLoginForm = false;
             window.location.href = "http://localhost:9000/#/emailverification";
