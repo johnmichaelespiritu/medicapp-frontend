@@ -1,8 +1,10 @@
 import { ref, readonly } from "vue";
 import axios from "axios";
 
+// const baseBackendURL =
+//   "http://localhost/medicapp/medicapp-frontend/medicapp-backend/";
 const baseBackendURL =
-  "http://localhost/medicapp/medicapp-frontend/medicapp-backend/";
+  "https://medicappsystem.000webhostapp.com/medicapp-backend/";
 export const searchContents = ref([]);
 
 //Sign Up
@@ -51,15 +53,73 @@ export const trigger = ref({
   showEmailVerificationForm: false,
 });
 
-export const getAllDataList = (path, data) => {
+// User Account Functions
+export const loginFunction = (payload) => {
   return new Promise((resolve, reject) => {
-    axios
-      .get(`${baseBackendURL}${path}`, { withCredentials: true })
-      .then((response) => {
-        if (response.data.status === "success") {
-          data.value = response.data.data;
+    fetch(`${baseBackendURL}Login.php`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          localStorage.setItem("token", JSON.stringify(data.data));
         }
-        resolve(response.data);
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const logoutFunction = (payload) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${baseBackendURL}Login.php`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const updateFunction = (payload) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${baseBackendURL}Login.php`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const getAllDataList = (path, information) => {
+  return new Promise((resolve, reject) => {
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    fetch(`${baseBackendURL}${path}?token=${encodeURIComponent(token.token)}`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          information.value = data.data;
+        }
+        resolve(data);
       })
       .catch((error) => {
         reject(error);
@@ -167,62 +227,6 @@ export const deleteData = (path, payload, data, id) => {
             }
           });
         }
-        resolve(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
-
-// User Account Functions
-export const loginFunction = (payload) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(
-        `${baseBackendURL}Login.php`,
-        {
-          payload,
-        },
-        { withCredentials: true }
-      )
-      .then((response) => {
-        response.data.status === "success" &&
-          userAccount.value.push(response.data.data);
-        resolve(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
-
-export const logoutFunction = (payload) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(
-        `${baseBackendURL}Login.php`,
-        {
-          payload,
-        },
-        { withCredentials: true }
-      )
-      .then((response) => {
-        resolve(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
-
-export const updateFunction = (payload) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(`${baseBackendURL}Login.php`, {
-        payload,
-      })
-      .then((response) => {
         resolve(response.data);
       })
       .catch((error) => {
