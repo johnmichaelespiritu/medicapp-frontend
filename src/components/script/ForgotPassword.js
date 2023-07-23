@@ -114,13 +114,13 @@ export default {
       const isForgotPasswordEmailFormValid = validateForgotPasswordEmailForm();
 
       if (isForgotPasswordEmailFormValid) {
-        updateFunction(resendVerificationCodeForm.value).then((response) => {
-          if (response.status === "failed") {
-            showNotification($quasar, "negative", response.message, 200);
+        updateFunction(resendVerificationCodeForm.value).then((data) => {
+          if (data.status === "failed") {
+            showNotification($quasar, "negative", data.message, 200);
           } else {
-            showNotification($quasar, "positive", response.message, 200);
-            userID.value = response.user_id;
-            userEmail.value = response.user_email;
+            showNotification($quasar, "positive", data.message, 200);
+            userID.value = data.user_id;
+            userEmail.value = data.user_email;
             userEmailVerificationPurpose.value = "forgot_password";
             window.location.href = "http://localhost:9000/#/emailverification";
           }
@@ -133,11 +133,11 @@ export default {
         validateForgotPasswordPasswordForm();
 
       if (isForgotPasswordPasswordFormValid) {
-        updateFunction(userUpdatePasswordForm.value).then((response) => {
-          if (response.status === "failed") {
-            showNotification($quasar, "negative", response.message, 200);
+        updateFunction(userUpdatePasswordForm.value).then((data) => {
+          if (data.status === "failed") {
+            showNotification($quasar, "negative", data.message, 200);
           } else {
-            showNotification($quasar, "positive", response.message, 200);
+            showNotification($quasar, "positive", data.message, 200);
             trigger.value.showLoginForm = true;
             window.location.href = "http://localhost:9000/#/";
           }
