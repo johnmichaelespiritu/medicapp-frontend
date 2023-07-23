@@ -1,11 +1,8 @@
 <?php
-header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
-
+header("Access-Control-Allow-Origin: http://localhost:9000");
 header('Access-Control-Allow-Credentials: true');
-
-header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE');
-
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 require_once('MysqliDb.php');
 
@@ -14,6 +11,11 @@ class DB {
   private $username = 'root';
   private $password = 'jackfrost050100';
   private $database = 'medicapp';
+
+  // private $host = 'localhost';
+  // private $username = 'id21065806_medicapp';
+  // private $password = '8H7!a0RAUXCxjuX8NXMd';
+  // private $database = 'id21065806_medicapp';
 
   protected $connection;
 
