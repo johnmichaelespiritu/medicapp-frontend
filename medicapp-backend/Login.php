@@ -1,33 +1,45 @@
 <?php
 
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use PHPMailer\PHPMailer\PHPMailer;
 
 require_once('./DB.php');
+require_once('./Utils.php');
 
 require('vendor/autoload.php');
 
 class UserAccounts extends DB
 {
-    private $secretKey = '8H7!a0RAUXCxjuX8NXMd';
-
     public function httpGet()
     {
+        $token_decoder = new Token();
         $token = $_GET['token'];
         
         if ($token) {
             try {
-                $decoded_token = JWT::decode($token, new Key($this->secretKey, 'HS256'));
+                $decoded_token = $token_decoder->decodeToken($token);
                 $user_name = $decoded_token->user_name;
                 
-                echo json_encode(array('method' => 'GET', 'status' => 'success', 'data' =>  $user_name));
+                $response = array(
+                    'method' => 'GET',
+                    'status' => 'success',
+                    'data' => $user_name
+                );
             } catch (Exception $e) {
-                echo json_encode(array('method' => 'GET', 'status' => 'failed', 'data' => 'Invalid token.'));
+                $response = array(
+                    'method' => 'GET',
+                    'status' => 'failed',
+                    'message' => 'Invalid token.'
+                );
             }
         } else {
-            echo json_encode(array('method' => 'GET', 'status' => 'failed', 'data' => 'Token not provided.'));
+            $response = array(
+                'method' => 'GET',
+                'status' => 'failed',
+                'message' => 'Token not provided.'
+            );
         }
+
+        echo json_encode($response);
     }
 
 
@@ -70,12 +82,8 @@ class UserAccounts extends DB
                     $user_id = $search_user_id['user_id'];
                     $user_name = $search_user_id['user_name'];
 
-                    $token_payload = array(
-                        'user_id' => $user_id,
-                        'user_name' => $user_name,
-                    );
-
-                    $jwt = JWT::encode($token_payload, $this->secretKey, 'HS256');
+                    $token_encoder = new Token();
+                    $encodedToken = $token_encoder->encodeToken($user_id, $user_name);
 
                      $response = array(
                         'method' => 'POST',
@@ -84,7 +92,7 @@ class UserAccounts extends DB
                         'data' => array(
                             'user_id' => $user_id,
                             'user_name' => $user_name,
-                            'token' => $jwt,
+                            'token' => $encodedToken,
                         ),
                     );
                 } else {
