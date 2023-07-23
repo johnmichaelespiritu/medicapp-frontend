@@ -1,147 +1,264 @@
 <?php
-session_start();
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use PHPMailer\PHPMailer\PHPMailer;
 
 require_once('./DB.php');
 
 require('vendor/autoload.php');
 
-class Login extends DB
+class UserAccounts extends DB
 {
-	public function httpGet()
-	{
-		$columns = array('user_id', 'user_name', 'user_email', 'user_password');
-		$get_all = $this->connection->get('tbl_user_account', null, $columns);
+    private $secretKey = '8H7!a0RAUXCxjuX8NXMd';
 
-		if ($get_all) {
-			echo json_encode(array('method' => 'GET', 'status' => 'success', 'data' => $_SESSION['user_name']));
-		} else {
-			echo json_encode(array('method' => 'GET', 'status' => 'failed', 'data' => $this->connection->getLastError()));
-		}
-	}
+    public function httpGet()
+    {
+        $token = $_GET['token'];
+        
+        if ($token) {
+            try {
+                $decoded_token = JWT::decode($token, new Key($this->secretKey, 'HS256'));
+                $user_name = $decoded_token->user_name;
+                
+                echo json_encode(array('method' => 'GET', 'status' => 'success', 'data' =>  $user_name));
+            } catch (Exception $e) {
+                echo json_encode(array('method' => 'GET', 'status' => 'failed', 'data' => 'Invalid token.'));
+            }
+        } else {
+            echo json_encode(array('method' => 'GET', 'status' => 'failed', 'data' => 'Token not provided.'));
+        }
+    }
+
 
 	public function httpPost($payload)
-	{
+    {
+        $action = $payload['action'];
 
-		if (is_array($payload['payload']) === true) {
-			// log in
-			if (count($payload['payload']) === 2) {
+        switch ($action) {
+            case 'login':
+                $this->login($payload);
+                break;
+            case 'signup':
+                $this->signUp($payload);
+                break;
+            case 'verify_code':
+                $this->verifyCode($payload);
+                break;
+            case 'resend_verification_code':
+                $this->resendVerificationCode($payload);
+                break;
+            case 'change_password':
+                $this->changePassword($payload);
+                break;
+            default:
+                $this->signOut($payload);
+                break;
+        }
+    }
 
-				$search_user_id = $this->connection->where('user_email', $payload['payload']['user_email'])->where('user_password', $payload['payload']['user_password'])->getOne('tbl_user_account');
+	private function login($payload)
+    {
+        $user_email = $payload['user_email'];
+        $user_password = $payload['user_password'];
 
-				if ($search_user_id) {
-					if ($search_user_id['email_verified_at'] !== null) {
-						$_SESSION['user_id'] = $search_user_id['user_id'];
-						$_SESSION['user_name'] = $search_user_id['user_name'];
-						echo json_encode(array('method' => 'POST', 'status' => 'success', 'data' => $search_user_id['user_id'], 'user_name' => $_SESSION['user_name']));
-					} else {
-						echo json_encode(array('method' => 'POST', 'status' => 'warning', 'data' => $search_user_id['user_id']));
-					}
-				} else {
-					echo json_encode(array('method' => 'POST', 'status' => 'failed', 'data' => $this->connection->getLastError()));
-				}
-			}
+        $search_user_id = $this->connection->where('user_email', $user_email)->getOne('tbl_user_account');
 
-			// sign up
-			else {
-				$search_user_email = $this->connection->where('user_email', $payload['payload']['user_email'])->getValue('tbl_user_account', 'user_email');
-				// $encrypted_password = password_hash($payload['payload']['user_password'], PASSWORD_DEFAULT);
+        if ($search_user_id) {
+            if ($search_user_id['email_verified_at'] !== null) {
+                if (password_verify($user_password, $search_user_id['user_password'])) {
+                    $user_id = $search_user_id['user_id'];
+                    $user_name = $search_user_id['user_name'];
 
-				if ($search_user_email === null) {
+                    $token_payload = array(
+                        'user_id' => $user_id,
+                        'user_name' => $user_name,
+                    );
 
-					$verification_code = $this->emailVerification($payload['payload']['user_email']);
+                    $jwt = JWT::encode($token_payload, $this->secretKey, 'HS256');
 
-					$add_user_account = array(
-						'user_name' => $payload['payload']['user_name'],
-						'user_email' => $payload['payload']['user_email'],
-						'user_password' => $payload['payload']['user_password'],
-						// 'user_password' => $encrypted_password,
-						'verification_code' => $verification_code,
-						'email_verified_at' => NULL
-					);
+                     $response = array(
+                        'method' => 'POST',
+                        'status' => 'success',
+                        'message' => 'Sign in successfully.',
+                        'data' => array(
+                            'user_id' => $user_id,
+                            'user_name' => $user_name,
+                            'token' => $jwt,
+                        ),
+                    );
+                } else {
+                    $response = array(
+                        'method' => 'POST',
+                        'status' => 'failed',
+                        'message' => 'Incorrect email address or password.'
+                    );
+                }
+            } else {
+                $response = array(
+                    'method' => 'POST',
+                    'status' => 'warning',
+                    'message' => 'Please verify your email account before signing in.',
+                    'data' => $search_user_id['user_id']
+                );
+            }
+        } else {
+            $response = array(
+                'method' => 'POST',
+                'status' => 'failed',
+                'message' => 'User not found.'
+            );
+        }
 
-					$new_account = $this->connection->insert('tbl_user_account', $add_user_account);
+        echo json_encode($response);
+    }
 
-					if ($new_account)
-						echo json_encode(array('method' => 'POST', 'status' => 'success', 'data' =>  $new_account));
-					else
-						echo json_encode(array('method' => 'POST', 'status' => 'failed', 'data' => 'Register unsuccessfully.'));
-				} else {
-					echo json_encode(array('method' => 'POST', 'status' => 'failed', 'data' => 'Email is already existing.'));
-				}
-			}
-		} else {
-			session_destroy();
-			echo json_encode(array('method' => 'POST', 'status' => 'success', 'data' => 'Sign out successfully.'));
-		}
-	}
+	private function signUp($payload)
+    {
+        $user_name = $payload['user_name'];
+        $user_email = $payload['user_email'];
+        $user_password = $payload['user_password'];
 
-	public function httpPut($payload)
-	{
-		if (is_array($payload['payload']) === true) {
-			if (
-				$payload['payload']['user_email_purpose'] === 'log_in' ||
-				$payload['payload']['user_email_purpose'] === 'sign_up' ||
-				$payload['payload']['user_email_purpose'] === 'forgot_password'
-			) {
+        $search_user_email = $this->connection->where('user_email', $user_email)->getValue('tbl_user_account', 'user_email');
 
-				$verification_code = $this->connection->where('user_id', $payload['payload']['user_id'])->getValue('tbl_user_account', 'verification_code');
+        if ($search_user_email === null) {
+            $encrypted_password = password_hash($user_password, PASSWORD_DEFAULT);
+            $verification_code = $this->emailVerification($user_email);
 
-				date_default_timezone_set('Asia/Singapore');
+            $add_user_account = array(
+                'user_name' => $user_name,
+                'user_email' => $user_email,
+                'user_password' => $encrypted_password,
+                'verification_code' => $verification_code,
+                'email_verified_at' => NULL
+            );
 
-				$data = array(
-					'email_verified_at' => date_create()->format('Y-m-d H:i:s')
-				);
+            $new_account = $this->connection->insert('tbl_user_account', $add_user_account);
 
-				if ($payload['payload']['verification_code'] === $verification_code) {
+            if ($new_account) {
+                $response = array(
+                    'method' => 'POST',
+                    'status' => 'success',
+                    'message' => 'Register successfully. Please verify your email account.',
+                    'data' =>  $new_account
+                );
+            } else {
+                $response = array(
+                    'method' => 'POST',
+                    'status' => 'failed',
+                    'message' => 'Register unsuccessfully.'
+                );
+            }
+        } else {
+            $response = array(
+                'method' => 'POST',
+                'status' => 'failed',
+                'message' => 'Email is already existing.'
+            );
+        }
 
-					$this->connection->where('user_id', $payload['payload']['user_id'])->update('tbl_user_account', $data);
+        echo json_encode($response);
+    }
 
-					echo json_encode(array('method' => 'PUT', 'status' => 'success', 'data' => $payload['payload']['user_email_purpose']));
-				} else {
+    private function verifyCode($payload)
+    {
+        $user_id = $payload['user_id'];
+        $verification_code = $payload['verification_code'];
+        $user_email_purpose = $payload['user_email_purpose'];
 
-					echo json_encode(array('method' => 'PUT', 'status' => 'failed', 'data' => 'Verification code failed.'));
-				}
-			} else {
+        $stored_verification_code = $this->connection->where('user_id', $user_id)->getValue('tbl_user_account', 'verification_code');
 
-				$data = array(
-					'user_password' => $payload['payload']['user_password']
-				);
+        date_default_timezone_set('Asia/Singapore');
 
-				$update_password = $this->connection->where('user_id', $payload['payload']['user_id'])->update('tbl_user_account', $data);
+        if ($verification_code === $stored_verification_code) {
+            $data = array(
+                'email_verified_at' => date_create()->format('Y-m-d H:i:s')
+            );
 
-				if ($update_password)
-					echo json_encode(array('method' => 'PUT', 'status' => 'success', 'data' => 'Password changed successfully.'));
-				else
-					echo json_encode(array('method' => 'PUT', 'status' => 'failed', 'data' => 'Password changed unsuccessfully.'));
-			}
-		} else {
+            $this->connection->where('user_id', $user_id)->update('tbl_user_account', $data);
 
-			$search_user = $this->connection->where('user_email', $payload['payload'])->getOne('tbl_user_account');
+            $response_message = ($user_email_purpose === 'forgot_password') ?
+                'You have successfully verified your account. You may now change your password.' :
+                'You have successfully verified your account.';
 
-			if ($search_user) {
+            $response = array(
+                'method' => 'POST',
+                'status' => 'success',
+                'message' => $response_message,
+                'data' => ($user_email_purpose === 'forgot_password') ? 'forgot_password' : null
+            );
+        } else {
+            $response = array(
+                'method' => 'POST',
+                'status' => 'failed',
+                'message' => 'Verification code failed.'
+            );
+        }
 
-				$verification_code = $this->emailVerification($search_user['user_email']);
+        echo json_encode($response);
+    }
 
-				$data = array(
-					'verification_code' => $verification_code
-				);
+    private function resendVerificationCode($payload)
+    {
+        $user_email = $payload['user_email'];
 
-				$this->connection->where('user_id', $search_user['user_id'])->update('tbl_user_account', $data);
+        $search_user = $this->connection->where('user_email', $user_email)->getOne('tbl_user_account');
 
-				echo json_encode(array('method' => 'PUT', 'status' => 'success', 'user_email' => $search_user['user_email'], 'user_id' => $search_user['user_id']));
-			} else {
+        if ($search_user) {
+            $verification_code = $this->emailVerification($search_user['user_email']);
 
-				echo json_encode(array('method' => 'PUT', 'status' => 'failed', 'data' => 'Email is not existing.'));
-			}
-		}
-	}
+            $data = array(
+                'verification_code' => $verification_code
+            );
 
-	public function httpDelete($payload)
-	{
+            $this->connection->where('user_id', $search_user['user_id'])->update('tbl_user_account', $data);
 
-	}
+            $response = array(
+                'method' => 'POST',
+                'status' => 'success',
+                'message' => 'Email is existing. Please verify your email address.',
+                'user_email' => $search_user['user_email'],
+                'user_id' => $search_user['user_id']
+            );
+        } else {
+            $response = array(
+                'method' => 'POST',
+                'status' => 'failed',
+                'message' => 'Email is not existing.'
+            );
+        }
+
+        echo json_encode($response);
+    }
+
+    private function changePassword($payload)
+    {
+        $user_id = $payload['user_id'];
+        $user_password = $payload['user_password'];
+
+        $encrypted_password = password_hash($user_password, PASSWORD_DEFAULT);
+
+        $data = array(
+            'user_password' => $encrypted_password
+        );
+
+        $update_password = $this->connection->where('user_id', $user_id)->update('tbl_user_account', $data);
+
+        $response = ($update_password) ?
+            array('method' => 'POST', 'status' => 'success', 'message' => 'Password changed successfully.') :
+            array('method' => 'POST', 'status' => 'failed', 'message' => 'Password changed unsuccessfully.');
+
+        echo json_encode($response);
+    }
+
+	private function signOut($payload)
+    {
+		$response = (true) ?
+		array('method' => 'POST', 'status' => 'success', 'message' => 'Sign out successfully.') :
+		array('method' => 'POST', 'status' => 'failed', 'message' => 'Sign out unsuccessfully.');
+
+        echo json_encode($response);
+    }
 
 	private function emailVerification($user_email)
 	{
@@ -185,20 +302,12 @@ $received_data = json_decode(file_get_contents('php://input'), true);
 
 $request_method = $_SERVER['REQUEST_METHOD'];
 
-$login = new Login;
+$user_accounts = new UserAccounts;
 
 if ($request_method === 'GET') {
-	$login->httpGet($received_data);
+	$user_accounts->httpGet();
 }
 
 if ($request_method === 'POST') {
-	$login->httpPost($received_data);
-}
-
-if ($request_method === 'PUT') {
-	$login->httpPut($received_data);
-}
-
-if ($request_method === 'DELETE') {
-	$login->httpDelete($received_data);
+	$user_accounts->httpPost($received_data);
 }
