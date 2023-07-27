@@ -1,5 +1,4 @@
 import { ref, readonly } from "vue";
-import axios from "axios";
 
 // const baseBackendURL =
 //   "http://localhost/medicapp/medicapp-frontend/medicapp-backend/";
