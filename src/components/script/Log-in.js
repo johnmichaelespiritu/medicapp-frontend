@@ -93,6 +93,7 @@ export default {
             setTimeout(() => {
               window.location.href =
                 "http://localhost:9000/#/home/dashboard-information";
+              location.reload();
               trigger.value.activeMenu = "Dashboard";
             }, 1000);
           }
