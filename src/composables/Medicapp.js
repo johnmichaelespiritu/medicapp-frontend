@@ -6,6 +6,7 @@ import axios from "axios";
 const baseBackendURL =
   "https://medicappsystem.000webhostapp.com/medicapp-backend/";
 export const searchContents = ref([]);
+const token = JSON.parse(localStorage.getItem("token"));
 
 //Sign Up
 export const userAccount = ref([]);
@@ -109,8 +110,6 @@ export const updateFunction = (payload) => {
 
 export const getAllDataList = (path, information) => {
   return new Promise((resolve, reject) => {
-    const token = JSON.parse(localStorage.getItem("token"));
-
     fetch(`${baseBackendURL}${path}?token=${encodeURIComponent(token.token)}`, {
       method: "GET",
     })
@@ -136,14 +135,16 @@ export const getSpecificInformation = (data, payload, id, result) => {
 };
 
 const getSearchResult = (payload) => {
+  const queryParams = new URLSearchParams(payload.params).toString();
+  const url = `${payload.path}&${queryParams}`;
+
   return new Promise((resolve, reject) => {
-    axios
-      .get(payload.path, {
-        withCredentials: true,
-        params: payload.params,
-      })
-      .then((response) => {
-        resolve(response.data);
+    fetch(url, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        resolve(data);
       })
       .catch((error) => {
         reject(error);
@@ -154,17 +155,17 @@ const getSearchResult = (payload) => {
 export const filterData = (path, val, update, abort) => {
   if (val.length > 0) {
     let payload = {
-      path: `${baseBackendURL}${path}`,
+      path: `${baseBackendURL}${path}?token=${encodeURIComponent(token.token)}`,
       params: {
         searchKeyword: val,
       },
     };
     update(() => {
-      getSearchResult(payload).then((response) => {
-        if (response.search === "doctor") {
-          searchDoctorContents.value = response.data;
+      getSearchResult(payload).then((data) => {
+        if (data.search === "doctor") {
+          searchDoctorContents.value = data.data;
         } else {
-          searchContents.value = response.data;
+          searchContents.value = data.data;
         }
       });
     });
@@ -173,15 +174,18 @@ export const filterData = (path, val, update, abort) => {
   }
 };
 
-export const addData = (path, payload, data) => {
+export const addData = (path, payload, information) => {
   return new Promise((resolve, reject) => {
-    axios
-      .post(`${baseBackendURL}${path}`, payload, { withCredentials: true })
-      .then((response) => {
-        if (response.data.status === "success") {
-          data.value.push(response.data.data);
+    fetch(`${baseBackendURL}${path}?token=${encodeURIComponent(token.token)}`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          information.value.push(data.data);
         }
-        resolve(response.data);
+        resolve(data);
       })
       .catch((error) => {
         reject(error);
@@ -189,21 +193,27 @@ export const addData = (path, payload, data) => {
   });
 };
 
-export const updateData = (path, payload, data, id) => {
+export const updateData = (path, payload, information, id) => {
   return new Promise((resolve, reject) => {
-    axios
-      .put(`${baseBackendURL}${path}`, payload, { withCredentials: true })
-      .then((response) => {
-        if (response.data.status === "success") {
-          let objectIndex = data.value.findIndex((e) => e[id] === payload[id]);
+    fetch(`${baseBackendURL}${path}?token=${encodeURIComponent(token.token)}`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          let objectIndex = information.value.findIndex(
+            (e) => e[id] === payload[id]
+          );
           // if index not found (-1) update nothing !
           if (objectIndex !== -1) {
-            Object.keys(data.value[objectIndex]).forEach((key) => {
-              payload[key] && (data.value[objectIndex][key] = payload[key]);
+            Object.keys(information.value[objectIndex]).forEach((key) => {
+              payload[key] &&
+                (information.value[objectIndex][key] = payload[key]);
             });
           }
         }
-        resolve(response.data);
+        resolve(data);
       })
       .catch((error) => {
         reject(error);
@@ -211,23 +221,24 @@ export const updateData = (path, payload, data, id) => {
   });
 };
 
-export const deleteData = (path, payload, data, id) => {
+export const deleteData = (path, payload, information, id) => {
   return new Promise((resolve, reject) => {
-    axios
-      .delete(`${baseBackendURL}${path}`, {
-        data: { payload },
-      })
-      .then((response) => {
-        if (response.data.status === "success") {
-          payload.forEach((ids) => {
-            let objectIndex = data.value.findIndex((e) => e[id] === ids);
+    fetch(`${baseBackendURL}${path}?token=${encodeURIComponent(token.token)}`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          payload.doctor_ids.forEach((ids) => {
+            let objectIndex = information.value.findIndex((e) => e[id] === ids);
             // if index not found (-1) delete nothing !
             if (objectIndex !== -1) {
-              data.value.splice(objectIndex, 1);
+              information.value.splice(objectIndex, 1);
             }
           });
         }
-        resolve(response.data);
+        resolve(data);
       })
       .catch((error) => {
         reject(error);
