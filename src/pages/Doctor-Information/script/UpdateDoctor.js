@@ -74,16 +74,17 @@ export default {
         if (isDoctorFormValid) {
           const isEmailValid = validateEmail();
           if (isEmailValid) {
+            doctorForm.value.action = "updateDoctor";
             updateData(
               "Doctor.php",
               doctorForm.value,
               doctor,
               "doctor_id"
-            ).then((response) => {
-              if (response.status === "failed") {
-                showNotification($quasar, "negative", response.data, 200);
+            ).then((data) => {
+              if (data.status === "failed") {
+                showNotification($quasar, "negative", data.message, 200);
               } else {
-                showNotification($quasar, "positive", response.data, 200);
+                showNotification($quasar, "positive", data.message, 200);
                 trigger.value.showUpdateDoctorModelDialog = false;
               }
             });

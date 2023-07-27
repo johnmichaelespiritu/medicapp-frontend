@@ -93,25 +93,21 @@ export default {
             color: "white",
             handler: function () {
               let doctor_ids = id.map((ids) => ids.doctor_id);
+
+              const doctorIDs = {
+                doctor_ids: doctor_ids,
+                action: "deleteDoctor",
+              };
+
               loading.value = true;
 
               setTimeout(() => {
-                deleteData("Doctor.php", doctor_ids, doctor, "doctor_id").then(
-                  (response) => {
-                    if (response.status === "failed") {
-                      showNotification(
-                        $quasar,
-                        "negative",
-                        "Doctor deleted unsuccessfully.",
-                        200
-                      );
+                deleteData("Doctor.php", doctorIDs, doctor, "doctor_id").then(
+                  (data) => {
+                    if (data.status === "failed") {
+                      showNotification($quasar, "negative", data.message, 200);
                     } else {
-                      showNotification(
-                        $quasar,
-                        "positive",
-                        "Doctor deleted successfully.",
-                        200
-                      );
+                      showNotification($quasar, "positive", data.message, 200);
                       searchDoctor.value = null;
                     }
                   }

@@ -47,16 +47,12 @@ export default {
       if (isDoctorFormValid) {
         const isEmailValid = validateEmail();
         if (isEmailValid) {
-          addData("Doctor.php", doctorForm.value, doctor).then((response) => {
-            if (response.status === "failed") {
-              showNotification($quasar, "negative", response.data, 200);
+          doctorForm.value.action = "addDoctor";
+          addData("Doctor.php", doctorForm.value, doctor).then((data) => {
+            if (data.status === "failed") {
+              showNotification($quasar, "negative", data.message, 200);
             } else {
-              showNotification(
-                $quasar,
-                "positive",
-                "Doctor added successfully.",
-                200
-              );
+              showNotification($quasar, "positive", data.message, 200);
               trigger.value.showAddDoctorModelDialog = false;
               resetForm(doctorForm.value);
             }
