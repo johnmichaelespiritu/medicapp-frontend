@@ -95,7 +95,7 @@ export default {
               let doctor_ids = id.map((ids) => ids.doctor_id);
 
               const doctorIDs = {
-                doctor_ids: doctor_ids,
+                ids: doctor_ids,
                 action: "deleteDoctor",
               };
 
