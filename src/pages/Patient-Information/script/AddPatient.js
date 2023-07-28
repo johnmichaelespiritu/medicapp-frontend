@@ -32,16 +32,12 @@ export default {
       const isPatientFormValid = validateFormInputs(patientForm, patientFields);
 
       if (isPatientFormValid) {
-        addData("Patient.php", patientForm.value, patient).then((response) => {
-          if (response.status === "failed") {
-            showNotification($quasar, "negative", response.data, 200);
+        patientForm.value.action = "addPatient";
+        addData("Patient.php", patientForm.value, patient).then((data) => {
+          if (data.status === "failed") {
+            showNotification($quasar, "negative", data.message, 200);
           } else {
-            showNotification(
-              $quasar,
-              "positive",
-              "Patient added successfully.",
-              200
-            );
+            showNotification($quasar, "positive", data.message, 200);
             trigger.value.showAddPatientModelDialog = false;
             resetForm(patientForm.value);
           }

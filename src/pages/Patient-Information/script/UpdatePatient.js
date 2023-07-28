@@ -60,16 +60,17 @@ export default {
 
       if (isPatientFormUpdated) {
         if (isPatientFormValid) {
+          patientForm.value.action = "updatePatient";
           updateData(
             "Patient.php",
             patientForm.value,
             patient,
             "patient_id"
-          ).then((response) => {
-            if (response.status === "failed") {
-              showNotification($quasar, "negative", response.data, 200);
+          ).then((data) => {
+            if (data.status === "failed") {
+              showNotification($quasar, "negative", data.message, 200);
             } else {
-              showNotification($quasar, "positive", response.data, 200);
+              showNotification($quasar, "positive", data.message, 200);
               trigger.value.showUpdatePatientModelDialog = false;
             }
           });
