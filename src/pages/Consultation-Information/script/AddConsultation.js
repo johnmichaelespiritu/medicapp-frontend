@@ -94,21 +94,17 @@ export default {
         if (selectedPatient.value || selectedDoctor.value) {
           consultationForm.value.patient_id = selectedPatient.value.patient_id;
           consultationForm.value.doctor_id = selectedDoctor.value.doctor_id;
+          consultationForm.value.action = "addConsultation";
 
           addData(
             "Consultation.php",
             consultationForm.value,
             consultation
-          ).then((response) => {
-            if (response.status === "failed") {
-              showNotification($quasar, "negative", response.data, 200);
+          ).then((data) => {
+            if (data.status === "failed") {
+              showNotification($quasar, "negative", data.message, 200);
             } else {
-              showNotification(
-                $quasar,
-                "positive",
-                "Consultation added successfully.",
-                200
-              );
+              showNotification($quasar, "positive", data.message, 200);
               trigger.value.showAddConsultationModelDialog = false;
               resetForm(consultationForm.value);
             }

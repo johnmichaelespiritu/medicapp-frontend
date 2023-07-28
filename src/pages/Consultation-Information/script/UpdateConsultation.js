@@ -121,6 +121,7 @@ export default {
 
       if (isConsultationFormUpdated) {
         if (isConsultationFormValid) {
+          consultationForm.value.action = "updateConsultation";
           if (selectedPatient.value) {
             consultationForm.value.patient_id =
               selectedPatient.value.patient_id;
@@ -130,9 +131,9 @@ export default {
               consultationForm.value,
               consultation,
               "consultation_id"
-            ).then((response) => {
-              if (response.status === "failed") {
-                showNotification($quasar, "negative", response.data, 200);
+            ).then((data) => {
+              if (data.status === "failed") {
+                showNotification($quasar, "negative", data.message, 200);
               } else {
                 showNotification(
                   $quasar,
@@ -151,9 +152,9 @@ export default {
               consultationForm.value,
               consultation,
               "consultation_id"
-            ).then((response) => {
-              if (response.status === "failed") {
-                showNotification($quasar, "negative", response.data, 200);
+            ).then((data) => {
+              if (data.status === "failed") {
+                showNotification($quasar, "negative", data.message, 200);
               } else {
                 showNotification(
                   $quasar,
@@ -170,9 +171,9 @@ export default {
               consultationForm.value,
               consultation,
               "consultation_id"
-            ).then((response) => {
-              if (response.status === "failed") {
-                showNotification($quasar, "negative", response.data, 200);
+            ).then((data) => {
+              if (data.status === "failed") {
+                showNotification($quasar, "negative", data.message, 200);
               } else {
                 showNotification(
                   $quasar,

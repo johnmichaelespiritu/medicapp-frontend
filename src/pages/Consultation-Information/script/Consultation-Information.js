@@ -147,29 +147,25 @@ export default {
             color: "white",
             handler: function () {
               let consultation_ids = id.map((ids) => ids.consultation_id);
+
+              const consultationIDs = {
+                ids: consultation_ids,
+                action: "deleteConsultation",
+              };
+
               loading.value = true;
 
               setTimeout(() => {
                 deleteData(
                   "Consultation.php",
-                  consultation_ids,
+                  consultationIDs,
                   consultation,
                   "consultation_id"
-                ).then((response) => {
-                  if (response.status === "failed") {
-                    showNotification(
-                      $quasar,
-                      "negative",
-                      "Consultation deleted unsuccessfully.",
-                      200
-                    );
+                ).then((data) => {
+                  if (data.status === "failed") {
+                    showNotification($quasar, "negative", data.message, 200);
                   } else {
-                    showNotification(
-                      $quasar,
-                      "positive",
-                      "Consultation deleted successfully.",
-                      200
-                    );
+                    showNotification($quasar, "positive", data.message, 200);
                     searchConsultation.value = null;
                   }
                 });
