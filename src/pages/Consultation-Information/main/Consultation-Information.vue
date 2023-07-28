@@ -17,21 +17,6 @@
       @click="addConsultation"
     />
 
-    <!-- <q-btn
-      flat
-      dense
-      round
-      icon="search"
-      :class="showSelect === false ? 'search cursor-pointer' : 'search-hidden'"
-      @click="showSelect = true"
-    /> 
-  
-   :class="
-        showSelect === true
-          ? 'consultation-information-search-consultation q-mx-lg'
-          : 'consultation-information-search-consultation-hidden'
-      "-->
-
     <q-select
       dense
       fill-input
@@ -87,17 +72,6 @@
       :disable="!deleteMultipleConsultation.length"
       @click="deleteConsultationInformation(deleteMultipleConsultation)"
     />
-
-    <!-- <q-select
-      dense
-      outlined
-      square
-      class="consultation-information-status bg-white q-mx-lg"
-      color="orange-8"
-      input-debounce="0"
-      v-model="filterStatus"
-      :options="statuses"
-    /> -->
 
     <div class="consultation-information-main-table">
       <q-table
