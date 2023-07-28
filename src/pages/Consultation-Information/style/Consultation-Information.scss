@@ -24,14 +24,11 @@
 }
 .consultation-information-search-consultation {
   position: absolute;
-  top: 58px;
+  top: 60px;
   right: 40px;
   width: 500px;
   transition: 1s;
 }
-// .consultation-information-search-consultation:hover {
-//   width: 500px;
-// }
 .consultation-information-search-consultation-hidden {
   position: absolute;
   top: 58px;
@@ -50,15 +47,9 @@
   left: 300px;
   visibility: hidden;
 }
-.consultation-information-status {
-  position: absolute;
-  top: 105px;
-  right: 40px;
-  width: 250px;
-}
-@media (max-width: 1090px) {
+@media (max-width: 740px) {
   .consultation-information-search-consultation {
-    width: 250px;
+    width: 95px;
   }
 }
 .clear-search-button {
@@ -81,19 +72,3 @@
 .consultation-information-edit-button {
   color: rgb(20, 34, 73);
 }
-
-// /* CSS for screens smaller than 600px */
-// @media only screen and (max-width: 600px) {
-//   .consultation-information-virtual-scroll {
-//     height: 500px; /* set desired height */
-//     overflow-y: scroll; /* add scrollbar if content overflows */
-//   }
-// }
-
-// /* CSS for screens larger than 600px */
-// @media only screen and (min-width: 1280) {
-//   .consultation-information-virtual-scroll {
-//     height: 500px; /* set desired height */
-//     overflow-y: scroll; /* add scrollbar if content overflows */
-//   }
-// }
