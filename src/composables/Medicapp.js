@@ -229,7 +229,7 @@ export const deleteData = (path, payload, information, id) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
-          payload.doctor_ids.forEach((ids) => {
+          payload.ids.forEach((ids) => {
             let objectIndex = information.value.findIndex((e) => e[id] === ids);
             // if index not found (-1) delete nothing !
             if (objectIndex !== -1) {
