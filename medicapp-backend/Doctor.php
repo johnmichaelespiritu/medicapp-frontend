@@ -142,7 +142,7 @@ class Doctor extends DB
     private function handleDeleteDoctor($payload)
     {
         $data = array('deleted_at' => date_create()->format('Y-m-d H:i:s'));
-        $delete_doctor = $this->connection->where('doctor_id', $payload['doctor_ids'], 'IN')->update('tbl_doctor_information', $data);
+        $delete_doctor = $this->connection->where('doctor_id', $payload['ids'], 'IN')->update('tbl_doctor_information', $data);
 
         if ($delete_doctor) {
             echo json_encode(array('method' => 'POST', 'status' => 'success', 'message' => 'Doctor deleted successfully.'));
