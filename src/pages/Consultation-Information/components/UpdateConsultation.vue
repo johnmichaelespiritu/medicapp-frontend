@@ -32,9 +32,17 @@
                   (val, update, abort) =>
                     filterData('Patient.php', val, update, abort)
                 "
-                :options="searchContents"
+                :options="searchContents.length > 0 ? searchContents : []"
                 :rules="[(val) => !!val || '']"
-              />
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="no-border text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </template>
 
             <template v-else-if="consultationField.key === 'doctor_name'">
@@ -55,9 +63,19 @@
                   (val, update, abort) =>
                     filterData('Doctor.php', val, update, abort)
                 "
-                :options="searchDoctorContents"
+                :options="
+                  searchDoctorContents.length > 0 ? searchDoctorContents : []
+                "
                 :rules="[(val) => !!val || '']"
-              />
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="no-border text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </template>
 
             <template v-else-if="consultationField.key === 'status'">
