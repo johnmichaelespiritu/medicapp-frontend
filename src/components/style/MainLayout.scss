@@ -1,0 +1,44 @@
+.main-layout,
+.main-user-name {
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+.main-header {
+  background-color: white;
+  color: black;
+}
+.main-drawer {
+  background-color: rgb(20, 34, 73);
+  color: white;
+}
+.drawer-label {
+  font-size: 16px;
+  color: white;
+  text-align: center;
+}
+.drawer-icon {
+  margin-top: -75px;
+  margin-left: 50px;
+}
+.active-class {
+  color: white;
+  background: linear-gradient(
+    90deg,
+    rgba(249, 152, 48, 1) 1.5%,
+    rgba(13, 26, 63, 1) 1.5%
+  );
+}
+.main-page-container {
+  position: relative;
+  z-index: 1;
+  overflow: hidden !important;
+}
+.main-user-name {
+  text-align: end;
+}
+.main-logout {
+  color: rgba(249, 152, 48, 1);
+  margin-left: auto;
+}
