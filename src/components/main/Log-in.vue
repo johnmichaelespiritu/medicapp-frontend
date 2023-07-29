@@ -1,6 +1,9 @@
 <template>
+  <!-- Main Layout -->
   <div class="main-layout">
+    <!-- Column for Logo -->
     <div class="col-logo">
+      <!-- SVG Logo -->
       <svg
         class="logo"
         width="600"
@@ -52,10 +55,15 @@
       </svg>
     </div>
 
+    <!-- Column for Form -->
     <div class="col-form">
+      <!-- Login Card (visible when showLoginForm is true) -->
       <q-card class="login-card text-white" v-show="trigger.showLoginForm">
+        <!-- Card Section for the login form -->
         <q-card-section>
+          <!-- Login Form -->
           <q-form class="login-form">
+            <!-- Input for Email -->
             <q-input
               hide-bottom-space
               lazy-rules
@@ -69,10 +77,12 @@
               :rules="rules"
             >
               <template v-slot:prepend>
+                <!-- Icon for email input -->
                 <q-icon name="mail" color="orange-8" />
               </template>
             </q-input>
 
+            <!-- Input for Password -->
             <q-input
               hide-bottom-space
               lazy-rules
@@ -87,9 +97,11 @@
               :type="isPwd ? 'password' : 'text'"
             >
               <template v-slot:prepend>
+                <!-- Icon for password input -->
                 <q-icon name="lock" color="orange-8" />
               </template>
               <template v-slot:append>
+                <!-- Icon for password visibility toggle -->
                 <q-icon
                   class="cursor-pointer"
                   color="orange-8"
@@ -99,6 +111,7 @@
               </template>
             </q-input>
 
+            <!-- Sign In Button -->
             <q-btn
               class="login-button text-capitalize"
               label="Sign In"
@@ -108,7 +121,9 @@
           </q-form>
         </q-card-section>
 
+        <!-- Lower Buttons Section -->
         <q-card-section class="lower-buttons">
+          <!-- Button for registering a new account -->
           <q-btn
             flat
             class="login-no-account text-capitalize"
@@ -117,6 +132,7 @@
             size="sm"
             @click="registerForm"
           />
+          <!-- Button for forgot password -->
           <q-btn
             flat
             class="login-forgot-account text-capitalize"
@@ -128,13 +144,16 @@
         </q-card-section>
       </q-card>
 
+      <!-- Router View (renders the appropriate component based on the route) -->
       <router-view />
     </div>
   </div>
 </template>
 
+<!-- Javascript source file -->
 <script src="../script/Log-in.js"></script>
 
+<!-- Scoped styles for the Log-in component -->
 <style lang="scss" scoped>
 @import "../style/Log-in.scss";
 </style>

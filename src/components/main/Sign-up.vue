@@ -1,7 +1,10 @@
 <template>
+  <!-- Signup Card Component -->
   <q-card class="signup-card text-white">
     <q-card-section>
+      <!-- Registration Form -->
       <q-form class="register-form">
+        <!-- Username Input -->
         <q-input
           hide-bottom-space
           lazy-rules
@@ -15,10 +18,12 @@
           :rules="rules"
         >
           <template v-slot:prepend>
+            <!-- Person Icon -->
             <q-icon name="person" color="orange-8" />
           </template>
         </q-input>
 
+        <!-- Email Input -->
         <q-input
           hide-bottom-space
           outlined
@@ -31,10 +36,12 @@
           :rules="rules"
         >
           <template v-slot:prepend>
+            <!-- Mail Icon -->
             <q-icon name="mail" color="orange-8" />
           </template>
         </q-input>
 
+        <!-- Password Input -->
         <q-input
           hide-bottom-space
           lazy-rules
@@ -49,9 +56,11 @@
           :type="isCreatePassword ? 'password' : 'text'"
         >
           <template v-slot:prepend>
+            <!-- Lock Icon -->
             <q-icon name="lock" color="orange-8" />
           </template>
           <template v-slot:append>
+            <!-- Toggle Visibility Icon for Password -->
             <q-icon
               class="cursor-pointer"
               color="orange-8"
@@ -61,6 +70,7 @@
           </template>
         </q-input>
 
+        <!-- Confirm Password Input -->
         <q-input
           hide-bottom-space
           lazy-rules
@@ -75,9 +85,11 @@
           :type="isConfirmPassword ? 'password' : 'text'"
         >
           <template v-slot:prepend>
+            <!-- Lock Icon -->
             <q-icon name="lock" color="orange-8" />
           </template>
           <template v-slot:append>
+            <!-- Toggle Visibility Icon for Confirm Password -->
             <q-icon
               class="cursor-pointer"
               color="orange-8"
@@ -89,12 +101,15 @@
       </q-form>
     </q-card-section>
 
+    <!-- Lower Buttons Section -->
     <q-card-section class="lower-buttons">
+      <!-- Register Button -->
       <q-btn
         class="register-button text-capitalize"
         label="Register"
         @click="addAccount"
       />
+      <!-- Cancel Button -->
       <q-btn
         class="cancel-button text-capitalize"
         label="Cancel"
@@ -104,8 +119,10 @@
   </q-card>
 </template>
 
+<!-- Javascript source file -->
 <script src="../script/Sign-up.js"></script>
 
+<!-- Scoped styles for the Sign-up component -->
 <style lang="scss" scoped>
 @import "../style/Sign-up.scss";
 </style>

@@ -1,7 +1,11 @@
 <template>
+  <!-- Main Layout -->
   <q-layout view="lHh LpR fFf" class="main-layout">
+    <!-- Main Header -->
     <q-header class="main-header" bordered fixed>
+      <!-- Toolbar with Menu, User Name, and Logout Button -->
       <q-toolbar>
+        <!-- Menu Button -->
         <q-btn
           flat
           dense
@@ -11,19 +15,24 @@
           @click="toggleLeftDrawer"
         />
 
+        <!-- Display User Name -->
         <q-toolbar-title class="main-user-name">
           {{ userName }}
         </q-toolbar-title>
 
+        <!-- Logout Button Dropdown -->
         <q-btn-dropdown
           class="main-logout"
           dropdown-icon="change_history"
           fab-mini
           flat
         >
+          <!-- List of Options in the Dropdown -->
           <q-list>
+            <!-- Sign Out Item -->
             <q-item clickable v-close-popup @click="logOut">
               <q-item-section avatar>
+                <!-- Logout Icon -->
                 <q-icon name="logout" color="black" />
               </q-item-section>
               <q-item-section> Sign Out </q-item-section>
@@ -33,6 +42,7 @@
       </q-toolbar>
     </q-header>
 
+    <!-- Left Drawer -->
     <q-drawer
       v-model="trigger.leftDrawerOpen"
       show-if-above
@@ -40,11 +50,14 @@
       class="main-drawer"
     >
       <q-list>
+        <!-- Drawer Label: Medicapp -->
         <q-item-label header class="drawer-label"> Medicapp </q-item-label>
+        <!-- Drawer Icon: Logo -->
         <q-icon class="drawer-icon" size="md">
           <img src="/logo.ico" />
         </q-icon>
 
+        <!-- Essential Links in the Drawer -->
         <EssentialLink
           v-for="link in essentialLinks"
           :key="link.title"
@@ -56,61 +69,18 @@
       </q-list>
     </q-drawer>
 
+    <!-- Page Container -->
     <q-page-container class="main-page-container">
+      <!-- Router View (renders the appropriate component based on the route) -->
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
+<!-- Javascript source file -->
 <script src="../script/MainLayout.js"></script>
 
-<!-- <style lang="scss" scoped>
-@import "../style/MainLayout.scss";
-</style> -->
-
+<!-- Scoped styles for the MainLayout component -->
 <style>
-.main-layout,
-.main-user-name {
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-}
-.main-header {
-  background-color: white;
-  color: black;
-}
-.main-drawer {
-  background-color: rgb(20, 34, 73);
-  color: white;
-}
-.drawer-label {
-  font-size: 16px;
-  color: white;
-  text-align: center;
-}
-.drawer-icon {
-  margin-top: -75px;
-  margin-left: 50px;
-}
-.active-class {
-  color: white;
-  background: linear-gradient(
-    90deg,
-    rgba(249, 152, 48, 1) 1.5%,
-    rgba(13, 26, 63, 1) 1.5%
-  );
-}
-.main-page-container {
-  position: relative;
-  z-index: 1;
-  overflow: hidden !important;
-}
-.main-user-name {
-  text-align: end;
-}
-.main-logout {
-  color: rgba(249, 152, 48, 1);
-  margin-left: auto;
-}
+@import "../style/MainLayout.scss";
 </style>
