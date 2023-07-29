@@ -1,4 +1,4 @@
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
 import AddConsultation from "src/pages/Consultation-Information/components/AddConsultation.vue";
 import UpdateConsultation from "src/pages/Consultation-Information/components/UpdateConsultation.vue";
