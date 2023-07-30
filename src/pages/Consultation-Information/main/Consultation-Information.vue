@@ -1,13 +1,17 @@
 <template>
+  <!-- Main layout for displaying consultation information -->
   <q-layout view="lHh LpR fFf">
+    <!-- Header section -->
     <q-header class="consultation-information-main-header">
       <q-toolbar>
+        <!-- Title for the consultation information -->
         <q-toolbar-title class="consultation-information-header-title">
           Consultation Information
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
+    <!-- Button to add a new consultation -->
     <q-btn
       flat
       no-caps
@@ -17,6 +21,7 @@
       @click="addConsultation"
     />
 
+    <!-- Search input for consultation list -->
     <q-select
       dense
       fill-input
@@ -45,6 +50,7 @@
       </template>
 
       <template v-if="searchConsultation" v-slot:append>
+        <!-- Clear search button. -->
         <q-btn
           flat
           round
@@ -54,6 +60,7 @@
         />
       </template>
 
+      <!-- No result template. -->
       <template v-slot:no-option>
         <q-item>
           <q-item-section class="no-border text-grey">
@@ -63,6 +70,7 @@
       </template>
     </q-select>
 
+    <!-- Button to delete selected consultations -->
     <q-btn
       flat
       dense
@@ -73,6 +81,7 @@
       @click="deleteConsultationInformation(deleteMultipleConsultation)"
     />
 
+    <!-- Main table to display consultation list -->
     <div class="consultation-information-main-table">
       <q-table
         bordered
@@ -105,18 +114,22 @@
       </q-table>
     </div>
 
+    <!-- Dialog for adding a new consultation -->
     <div v-show="trigger.showAddConsultationModelDialog">
       <AddConsultation />
     </div>
 
+    <!-- Dialog for updating an existing consultation -->
     <div v-show="trigger.showUpdateConsultationModelDialog">
       <UpdateConsultation />
     </div>
   </q-layout>
 </template>
 
+<!-- Javascript source file -->
 <script src="../script/Consultation-Information.js"></script>
 
+<!-- Scoped styles for the Consultation-Information component -->
 <style lang="scss" scoped>
 @import "../style/Consultation-Information.scss";
 </style>

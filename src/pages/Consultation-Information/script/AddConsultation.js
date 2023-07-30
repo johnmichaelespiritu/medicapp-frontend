@@ -19,8 +19,10 @@ import {
 
 export default {
   setup() {
+    // Quasar instance for accessing Quasar plugins.
     const $quasar = useQuasar();
 
+    // Array of consultation fields and their labels.
     const consultationFields = [
       { key: "patient_name", label: "Patient Name" },
       { key: "doctor_name", label: "Doctor Name" },
@@ -34,6 +36,7 @@ export default {
       { key: "consultation_date", label: "Consultation Date" },
     ];
 
+    // Object to store consultation form data.
     const consultationForm = ref({
       patient_id: null,
       doctor_id: null,
@@ -42,18 +45,27 @@ export default {
       ),
     });
 
+    /**
+     * Function to watch for changes in selectedPatient and update related fields in consultationForm.
+     */
     const { selectedRecord: selectedPatient } = useSelectedRecord(
       searchContents,
       consultationForm,
       "patient_name"
     );
 
+    /**
+     * Function to watch for changes in selectedDoctor and update related fields in consultationForm.
+     */
     const { selectedRecord: selectedDoctor } = useSelectedRecord(
       searchDoctorContents,
       consultationForm,
       "doctor_name"
     );
 
+    /**
+     * Watcher for selectedPatient to update patient-related fields in consultationForm
+     */
     watch(selectedPatient, (patient) => {
       const fieldsToUpdate = [
         "patient_age",
@@ -71,10 +83,15 @@ export default {
       }
     });
 
+    /**
+     * Validates the inputs of the consultation form.
+     * @returns {boolean} True if all required fields have valid values; false otherwise.
+     */
     const validateConsultationFormInputs = () => {
       return consultationFields.every((field) => {
         const value = consultationForm.value[field.key];
 
+        // Skip validation for patient related fields.
         if (
           field.key === "patient_age" ||
           field.key === "patient_home_address" ||
@@ -87,34 +104,45 @@ export default {
       });
     };
 
+    /**
+     * Handles the process of adding consultation information.
+     */
     const addConsultationInformation = () => {
+      // Validates the form inputs and adds the consultation if valid.
       const isConsultationFormValid = validateConsultationFormInputs();
 
       if (isConsultationFormValid) {
+        // Check if a patient or doctor is selected.
         if (selectedPatient.value || selectedDoctor.value) {
           consultationForm.value.patient_id = selectedPatient.value.patient_id;
           consultationForm.value.doctor_id = selectedDoctor.value.doctor_id;
           consultationForm.value.action = "addConsultation";
 
+          // Call the addData function to add consultation data.
           addData(
             "Consultation.php",
             consultationForm.value,
             consultation
           ).then((data) => {
             if (data.status === "failed") {
+              // Show error notification for failed attempt.
               showNotification($quasar, "negative", data.message, 200);
             } else {
+              // Show success notification for successful addition.
               showNotification($quasar, "positive", data.message, 200);
+              // Close the dialog and reset the form.
               trigger.value.showAddConsultationModelDialog = false;
               resetForm(consultationForm.value);
             }
           });
         }
       } else {
+        // Show error notification if required fields are empty.
         showNotification($quasar, "negative", "Required field.", 200);
       }
     };
 
+    // Return the reactive references and functions.
     return {
       consultationFields,
       consultationForm,

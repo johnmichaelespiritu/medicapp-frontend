@@ -27,13 +27,17 @@ export default {
   },
 
   setup() {
+    // Quasar instance for accessing Quasar plugins.
     const $quasar = useQuasar();
+
+    // Variables to manage state and data.
     const loading = ref(false);
     const deleteMultipleConsultation = ref([]);
     const searchConsultation = ref(null);
     const filterStatus = ref(null);
     const showSelect = ref(false);
 
+    // Array of consultation statuses.
     const statuses = ref([
       "Scheduled",
       "In Progress",
@@ -44,6 +48,7 @@ export default {
       "Follow-up",
     ]);
 
+    // Configuration for the columns in the consultation table.
     const columns = [
       {
         name: "patient_name",
@@ -120,11 +125,20 @@ export default {
       { name: "action", align: "center", label: "Action", field: "action" },
     ];
 
+    /**
+     * Adds a new consultation.
+     * Sets the trigger value into true to open the "Add Consultation" dialog.
+     */
     const addConsultation = () => {
       deleteMultipleConsultation.value = [];
       trigger.value.showAddConsultationModelDialog = true;
     };
 
+    /**
+     * Updates an existing consultation.
+     * Sets the trigger value into true to open the "Update Consultation" dialog and fetches the consultation details.
+     * @param {number} id - The ID of the consultation to update.
+     */
     const updateConsultation = (id) => {
       deleteMultipleConsultation.value = [];
       trigger.value.showUpdateConsultationModelDialog = true;
@@ -136,6 +150,11 @@ export default {
       );
     };
 
+    /**
+     * Deletes a list of consultations.
+     * Shows a confirmation dialog and then performs the delete operation.
+     * @param {Array} id - An array of consultation IDs to delete.
+     */
     const deleteConsultationInformation = (id) => {
       $quasar.notify({
         message: "Are you sure you want to delete?",
@@ -183,16 +202,29 @@ export default {
       });
     };
 
+    /**
+     * Clears the search input value.
+     * Resets the searchConsultation variable to null.
+     */
     const clearSearch = () => {
       searchConsultation.value = null;
     };
 
+    /**
+     * Checks if the search input is empty and sets searchConsultation to null if it is.
+     * @param {Event} e - The blur event.
+     */
     const checkInput = (e) => {
       if (e.target.value === "") {
         searchConsultation.value = null;
       }
     };
 
+    /**
+     * Function called when a consultation is selected in the search input.
+     * Fetches the specific information of the selected consultation.
+     * @param {Object} value - The selected consultation object.
+     */
     const selectedConsultation = (value) => {
       getSpecificInformation(
         consultation,
@@ -202,21 +234,33 @@ export default {
       );
     };
 
+    /**
+     * Gets the message for the number of selected records and the total number of records in a list.
+     */
     const { getSelectedRecords: getSelectedConsultation } = useSelectedRecords(
       deleteMultipleConsultation,
       consultationLists
     );
 
+    /**
+     * Filters and returns the list of records based on specific information and search value.
+     */
     const { listPage: consultationListPage } = useListPage(
       specificConsultationInformation,
       searchConsultation,
       consultationLists
     );
 
+    /**
+     * Executes the specified function when the component is mounted to the DOM.
+     * In this case, it calls the `getAllDataList` function with the parameters "Consultation.php" and `consultation`.
+     * This is used to fetch all the consultation lists when the component is first rendered.
+     */
     onMounted(() => {
       getAllDataList("Consultation.php", consultation);
     });
 
+    // Return the reactive references and functions.
     return {
       showSelect,
       columns,

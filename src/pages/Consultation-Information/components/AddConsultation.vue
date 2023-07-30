@@ -1,7 +1,9 @@
 <template>
+  <!-- A dialog to add consultation information. -->
   <q-dialog persistent v-model="trigger.showAddConsultationModelDialog">
     <q-card class="add-consultation-dialog">
       <q-toolbar>
+        <!-- Dialog title -->
         <q-toolbar-title class="add-consultation-dialog-header">
           Add Consultation
         </q-toolbar-title>
@@ -9,12 +11,16 @@
 
       <div class="bg-white">
         <q-form class="add-consultation-form">
+          <!-- Loop through each consultation field. -->
           <q-list
             v-for="(consultationField, index) in consultationFields"
             :key="index"
           >
+            <!-- Display the label for the current consultation field. -->
             <span class="label">{{ consultationField.label }}</span>
+            <!-- Render different input components based on the consultation field key. -->
             <template v-if="consultationField.key === 'patient_name'">
+              <!-- Select input for patient name. -->
               <q-select
                 dense
                 emit-value
@@ -35,6 +41,7 @@
                 :options="searchContents.length > 0 ? searchContents : []"
                 :rules="[(val) => !!val || '']"
               >
+                <!-- No result template. -->
                 <template v-slot:no-option>
                   <q-item>
                     <q-item-section class="no-border text-grey">
@@ -46,6 +53,7 @@
             </template>
 
             <template v-else-if="consultationField.key === 'doctor_name'">
+              <!-- Select input for doctor name. -->
               <q-select
                 dense
                 emit-value
@@ -68,6 +76,7 @@
                 "
                 :rules="[(val) => !!val || '']"
               >
+                <!-- No result template. -->
                 <template v-slot:no-option>
                   <q-item>
                     <q-item-section class="no-border text-grey">
@@ -79,6 +88,7 @@
             </template>
 
             <template v-else-if="consultationField.key === 'status'">
+              <!-- Select input for consultation status. -->
               <q-select
                 dense
                 outlined
@@ -92,6 +102,7 @@
             </template>
 
             <template v-else>
+              <!-- Default input for other consultation fields (patient age, patient home address, patient contact number, complaints, diagnosis, treatment, consultation date). -->
               <q-input
                 dense
                 outlined
@@ -127,7 +138,9 @@
             </template>
           </q-list>
 
+          <!-- Lower Buttons Section -->
           <div class="lower-buttons">
+            <!-- Button for saving consultation -->
             <q-btn
               flat
               no-caps
@@ -135,6 +148,7 @@
               label="Save"
               @click="addConsultationInformation"
             />
+            <!-- Button for cancelling consultation -->
             <q-btn
               flat
               no-caps
@@ -150,8 +164,10 @@
   </q-dialog>
 </template>
 
+<!-- Javascript source file -->
 <script src="../script/AddConsultation.js"></script>
 
+<!-- Scoped styles for the AddConsultation component -->
 <style lang="scss" scoped>
 @import "../style/AddConsultation.scss";
 </style>

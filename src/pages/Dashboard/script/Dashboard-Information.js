@@ -12,6 +12,7 @@ import { setActiveMenu } from "src/components/script/MainLayout";
 
 export default {
   setup() {
+    // The dashboardFields array contains objects representing different dashboard fields.
     let dashboardFields = [
       {
         key: "doctor",
@@ -33,6 +34,12 @@ export default {
       },
     ];
 
+    /**
+     * The moreInformation function is triggered when the "More Information" chip is clicked for a specific dashboard field.
+     * It sets the active menu and navigates to the corresponding page with a slight delay for a better user experience.
+     * @param {string} key - The key of the selected dashboard field.
+     * @param {string} title - The title of the selected dashboard field.
+     */
     const moreInformation = (key, title) => {
       setTimeout(() => {
         setActiveMenu(title);
@@ -40,12 +47,17 @@ export default {
       }, 1000);
     };
 
+    /**
+     * Executes the specified function when the component is mounted to the DOM.
+     * It retrieves and populates the lists for doctors, patients, and consultations.
+     */
     onMounted(() => {
       getAllDataList("Doctor.php", doctor);
       getAllDataList("Patient.php", patient);
       getAllDataList("Consultation.php", consultation);
     });
 
+    // Return the reactive references and functions.
     return { dashboardFields, moreInformation };
   },
 };
