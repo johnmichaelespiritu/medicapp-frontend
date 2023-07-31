@@ -165,7 +165,7 @@ export default {
      */
     const registerForm = () => {
       trigger.value.showLoginForm = false;
-      window.location.href = "http://localhost:9000/#/signup";
+      window.location.href = "https://medicapp-system.netlify.app/#/signup";
       resetLoginForm();
     };
 
@@ -175,7 +175,8 @@ export default {
     const forgotPasswordForm = () => {
       trigger.value.showLoginForm = false;
       trigger.value.showForgotPasswordEmailForm = true;
-      window.location.href = "http://localhost:9000/#/forgotpassword";
+      window.location.href =
+        "https://medicapp-system.netlify.app/#/forgotpassword";
       resetLoginForm();
     };
 
