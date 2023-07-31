@@ -169,7 +169,8 @@ export default {
             // Hide login form after the warning message.
             trigger.value.showLoginForm = false;
             // Redirect to the email verification page.
-            window.location.href = "http://localhost:9000/#/emailverification";
+            window.location.href =
+              "https://medicapp-system.netlify.app/#/emailverification";
           }
         });
       }
@@ -209,7 +210,7 @@ export default {
       // Show login form after exit.
       trigger.value.showLoginForm = true;
       // Redirect to the login page.
-      window.location.href = "http://localhost:9000/#/";
+      window.location.href = "https://medicapp-system.netlify.app/#/";
     };
 
     /**

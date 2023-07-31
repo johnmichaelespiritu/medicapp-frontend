@@ -46,12 +46,13 @@ export default {
               trigger.value.showForgotPasswordEmailForm = false;
               trigger.value.showForgotPasswordPasswordForm = true;
               userEmailVerificationPurpose.value = "change_password";
-              window.location.href = "http://localhost:9000/#/forgotpassword";
+              window.location.href =
+                "https://medicapp-system.netlify.app/#/forgotpassword";
             } else {
               // Show positive notification for successful verification and change purpose to 'login'.
               showNotification($quasar, "positive", data.message, 200);
               trigger.value.showLoginForm = true;
-              window.location.href = "http://localhost:9000/#/";
+              window.location.href = "https://medicapp-system.netlify.app/#/";
             }
           }
         });
@@ -63,7 +64,7 @@ export default {
      */
     const exitEmailVerificationForm = () => {
       trigger.value.showLoginForm = true;
-      window.location.href = "http://localhost:9000/#/";
+      window.location.href = "https://medicapp-system.netlify.app/#/";
     };
 
     /**

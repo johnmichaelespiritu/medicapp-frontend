@@ -114,7 +114,7 @@ export default {
               userEmailVerificationPurpose.value = "login";
               // Redirect to the email verification page.
               window.location.href =
-                "http://localhost:9000/#/emailverification";
+                "https://medicapp-system.netlify.app/#/emailverification";
             }, 1000);
           } else if (data.status === "failed") {
             // Handle failed status response.
@@ -129,7 +129,7 @@ export default {
             setTimeout(() => {
               // Redirect to the dashboard information page.
               window.location.href =
-                "http://localhost:9000/#/home/dashboard-information";
+                "https://medicapp-system.netlify.app/#/dashboard-information";
               location.reload();
               trigger.value.activeMenu = "Dashboard";
             }, 1000);

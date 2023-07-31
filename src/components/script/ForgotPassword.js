@@ -157,7 +157,8 @@ export default {
             userEmail.value = data.user_email;
             userEmailVerificationPurpose.value = "forgot_password";
             // Redirect to email verification page.
-            window.location.href = "http://localhost:9000/#/emailverification";
+            window.location.href =
+              "https://medicapp-system.netlify.app/#/emailverification";
           }
         });
       }
@@ -183,7 +184,7 @@ export default {
             // Show login form after successful password update.
             trigger.value.showLoginForm = true;
             // Redirect to the login page.
-            window.location.href = "http://localhost:9000/#/";
+            window.location.href = "https://medicapp-system.netlify.app/#/";
           }
         });
       }
@@ -219,7 +220,7 @@ export default {
     const exitForgotPasswordForm = () => {
       resetForgotPasswordForm();
       trigger.value.showLoginForm = true;
-      window.location.href = "http://localhost:9000/#/";
+      window.location.href = "https://medicapp-system.netlify.app/#/";
     };
 
     /**
