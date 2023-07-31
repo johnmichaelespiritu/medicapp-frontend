@@ -1,13 +1,17 @@
 <template>
+  <!-- Main layout for displaying doctor information -->
   <q-layout view="lHh LpR fFf">
+    <!-- Header section -->
     <q-header class="doctor-information-main-header">
       <q-toolbar>
+        <!-- Title for the doctor information -->
         <q-toolbar-title class="doctor-information-header-title">
           Doctor Information
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
+    <!-- Button to add a new doctor -->
     <q-btn
       flat
       no-caps
@@ -17,6 +21,7 @@
       @click="addDoctor"
     />
 
+    <!-- Search input for doctor list -->
     <q-select
       dense
       fill-input
@@ -44,6 +49,7 @@
       </template>
 
       <template v-if="searchDoctor" v-slot:append>
+        <!-- Clear search button. -->
         <q-btn
           flat
           round
@@ -53,6 +59,7 @@
         />
       </template>
 
+      <!-- No result template. -->
       <template v-slot:no-option>
         <q-item>
           <q-item-section class="text-black"> No results </q-item-section>
@@ -60,6 +67,7 @@
       </template>
     </q-select>
 
+    <!-- Button to delete selected doctors -->
     <q-btn
       flat
       dense
@@ -70,6 +78,7 @@
       @click="deleteDoctorInformation(deleteMultipleDoctor)"
     />
 
+    <!-- Main table to display doctor list -->
     <div class="doctor-information-main-table">
       <q-table
         bordered
@@ -102,18 +111,22 @@
       </q-table>
     </div>
 
+    <!-- Dialog for adding a new doctor -->
     <div v-show="trigger.showAddDoctorModelDialog">
       <AddDoctor />
     </div>
 
+    <!-- Dialog for updating an existing doctor -->
     <div v-show="trigger.showUpdateDoctorModelDialog">
       <UpdateDoctor />
     </div>
   </q-layout>
 </template>
 
+<!-- Javascript source file -->
 <script src="../script/Doctor-Information.js"></script>
 
+<!-- Scoped styles for the Doctor-Information component -->
 <style lang="scss" scoped>
 @import "../style/Doctor-Information.scss";
 </style>

@@ -1,7 +1,9 @@
 <template>
+  <!-- A dialog to add patient information. -->
   <q-dialog persistent v-model="trigger.showAddPatientModelDialog">
     <q-card class="add-patient-dialog">
       <q-toolbar>
+        <!-- Dialog title -->
         <q-toolbar-title class="add-patient-dialog-header">
           Add Patient
         </q-toolbar-title>
@@ -9,10 +11,13 @@
 
       <div class="bg-white">
         <q-form class="add-patient-form">
+          <!-- Loop through each patient field. -->
           <q-list v-for="(patientField, index) in patientFields" :key="index">
+            <!-- Display the label for the current patient field. -->
             <span class="label">{{ patientField.label }}</span>
-
+            <!-- Render different input components based on the patient field key. -->
             <template v-if="patientField.key === 'patient_gender'">
+              <!-- Select input for patient gender. -->
               <q-select
                 dense
                 outlined
@@ -26,6 +31,7 @@
             </template>
 
             <template v-else>
+              <!-- Default input for other patient fields (patient name, patient age, patient home address, patient contact number, patient birthdate). -->
               <q-input
                 dense
                 outlined
@@ -61,7 +67,9 @@
             </template>
           </q-list>
 
+          <!-- Lower Buttons Section -->
           <div class="lower-buttons">
+            <!-- Button for saving patient -->
             <q-btn
               flat
               no-caps
@@ -69,6 +77,7 @@
               label="Save"
               @click="addPatientInformation"
             />
+            <!-- Button for cancelling patient information -->
             <q-btn
               flat
               no-caps
@@ -84,8 +93,10 @@
   </q-dialog>
 </template>
 
+<!-- Javascript source file -->
 <script src="../script/AddPatient.js"></script>
 
+<!-- Scoped styles for the AddPatient component -->
 <style lang="scss" scoped>
 @import "../style/AddPatient.scss";
 </style>
