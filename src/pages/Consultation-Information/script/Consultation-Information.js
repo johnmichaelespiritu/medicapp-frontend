@@ -156,6 +156,7 @@ export default {
      * @param {Array} id - An array of consultation IDs to delete.
      */
     const deleteConsultationInformation = (id) => {
+      // Show a notification dialog to confirm the deletion.
       $quasar.notify({
         message: "Are you sure you want to delete?",
         timeout: 0,
@@ -165,16 +166,20 @@ export default {
             label: "DELETE",
             color: "white",
             handler: function () {
+              // Extract an array of consultation IDs from the input 'id' array.
               let consultation_ids = id.map((ids) => ids.consultation_id);
 
+              // Create an object containing the consultation IDs and the action to be performed.
               const consultationIDs = {
                 ids: consultation_ids,
                 action: "deleteConsultation",
               };
 
+              // Set the 'loading' value to true to indicate that the deletion is in progress.
               loading.value = true;
 
               setTimeout(() => {
+                // Handles the process of deleting selected consultations.
                 deleteData(
                   "Consultation.php",
                   consultationIDs,
@@ -182,14 +187,19 @@ export default {
                   "consultation_id"
                 ).then((data) => {
                   if (data.status === "failed") {
+                    // Show error notification for failed attempt.
                     showNotification($quasar, "negative", data.message, 200);
                   } else {
+                    // Show success notification for successful deletion.
                     showNotification($quasar, "positive", data.message, 200);
+                    // Clear the searchConsultation value to refresh the data.
                     searchConsultation.value = null;
                   }
                 });
 
+                // Set the 'loading' value to false after the deletion operation is completed.
                 loading.value = false;
+                // Clear the deleteMultipleConsultation array.
                 deleteMultipleConsultation.value = [];
               }, 500);
             },

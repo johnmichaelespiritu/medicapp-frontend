@@ -116,6 +116,8 @@ export default {
         if (selectedPatient.value || selectedDoctor.value) {
           consultationForm.value.patient_id = selectedPatient.value.patient_id;
           consultationForm.value.doctor_id = selectedDoctor.value.doctor_id;
+
+          // Set the action for the add consultation form.
           consultationForm.value.action = "addConsultation";
 
           // Call the addData function to add consultation data.
