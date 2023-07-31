@@ -129,7 +129,7 @@ export default {
             setTimeout(() => {
               // Redirect to the dashboard information page.
               window.location.href =
-                "https://medicapp-system.netlify.app/#/dashboard-information";
+                "https://medicapp-system.netlify.app/#/home/dashboard-information";
               location.reload();
               trigger.value.activeMenu = "Dashboard";
             }, 1000);
