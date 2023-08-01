@@ -144,10 +144,13 @@ class Consultation extends DB
             // Insert the new consultation record into the database.
             $add_consultation = $this->connection->insert('tbl_consultation_information', $data);
 
-            if ($add_consultation)
+            if ($add_consultation) {
+                $data['consultation_id'] = $add_consultation;
                 echo json_encode(array('method' => 'POST', 'status' => 'success', 'data' => $data, 'message' => 'Consultation added successfully.'));
-            else
+            }
+            else {
                 echo json_encode(array('method' => 'POST', 'status' => 'failed', 'message' => 'Consultation added unsuccessfully.'));
+            }
         } catch (Exception $e) {
             // Return an error response if an exception occurs during token decoding.
             echo json_encode(array('method' => 'GET', 'status' => 'failed', 'message' => 'Invalid token.'));

@@ -156,10 +156,13 @@ class Doctor extends DB
             // Insert the new doctor record into the database.
             $add_doctor = $this->connection->insert('tbl_doctor_information', $data);
 
-            if ($add_doctor)
+            if ($add_doctor) {
+                $data['doctor_id'] = $add_doctor;
                 echo json_encode(array('method' => 'POST', 'status' => 'success', 'data' => $data, 'message' => 'Doctor added successfully.'));
-            else
+            }
+            else {
                 echo json_encode(array('method' => 'POST', 'status' => 'failed', 'message' => 'Doctor added unsuccessfully.'));
+            }
         } catch (Exception $e) {
             // Return an error response if an exception occurs during token decoding.
             echo json_encode(array('method' => 'GET', 'status' => 'failed', 'message' => 'Invalid token.'));

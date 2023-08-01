@@ -138,10 +138,13 @@ class Patient extends DB
              // Insert the new patient record into the database.
             $add_patient = $this->connection->insert('tbl_patient_information', $data);
 
-            if ($add_patient)
+            if ($add_patient) {
+                $data['patient_id'] = $add_patient;
                 echo json_encode(array('method' => 'POST', 'status' => 'success', 'data' => $data, 'message' => 'Patient added successfully.'));
-            else
+            }
+            else {
                 echo json_encode(array('method' => 'POST', 'status' => 'failed', 'message' => 'Patient added unsuccessfully.'));
+            }
         } catch (Exception $e) {
             // Return an error response if an exception occurs during token decoding.
             echo json_encode(array('method' => 'GET', 'status' => 'failed', 'message' => 'Invalid token.'));
