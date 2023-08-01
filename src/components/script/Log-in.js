@@ -20,7 +20,6 @@ export default {
 
     // Form data for user email and password.
     const loginForm = ref({
-      action: "login",
       user_email: null,
       user_password: null,
     });
@@ -99,6 +98,8 @@ export default {
         userEmailRef.value.$el.classList.remove("error");
         userPasswordRef.value.$el.classList.remove("error");
 
+        loginForm.value.action = "login";
+
         // Perform login function and handle the response.
         loginFunction(loginForm.value).then((data) => {
           if (data.status === "warning") {
@@ -115,6 +116,8 @@ export default {
               // Redirect to the email verification page.
               window.location.href =
                 "https://medicapp-system.netlify.app/#/emailverification";
+              // window.location.href =
+              //   "http://localhost:9000/#/emailverification";
             }, 1000);
           } else if (data.status === "failed") {
             // Handle failed status response.
@@ -130,6 +133,8 @@ export default {
               // Redirect to the dashboard information page.
               window.location.href =
                 "https://medicapp-system.netlify.app/#/home/dashboard-information";
+              // window.location.href =
+              //   "http://localhost:9000/#/home/dashboard-information";
               location.reload();
               trigger.value.activeMenu = "Dashboard";
             }, 1000);
@@ -166,6 +171,7 @@ export default {
     const registerForm = () => {
       trigger.value.showLoginForm = false;
       window.location.href = "https://medicapp-system.netlify.app/#/signup";
+      // window.location.href = "http://localhost:9000/#/signup";
       resetLoginForm();
     };
 
@@ -177,6 +183,7 @@ export default {
       trigger.value.showForgotPasswordEmailForm = true;
       window.location.href =
         "https://medicapp-system.netlify.app/#/forgotpassword";
+      // window.location.href = "http://localhost:9000/#/forgotpassword";
       resetLoginForm();
     };
 

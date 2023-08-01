@@ -44,6 +44,7 @@ export default {
       setTimeout(() => {
         setActiveMenu(title);
         window.location.href = `https://medicapp-system.netlify.app/#/home/${key}-information`;
+        // window.location.href = `http://localhost:9000/#/home/${key}-information`;
       }, 1000);
     };
 

@@ -171,6 +171,7 @@ export default {
             // Redirect to the email verification page.
             window.location.href =
               "https://medicapp-system.netlify.app/#/emailverification";
+            // window.location.href = "http://localhost:9000/#/emailverification";
           }
         });
       }
@@ -211,6 +212,7 @@ export default {
       trigger.value.showLoginForm = true;
       // Redirect to the login page.
       window.location.href = "https://medicapp-system.netlify.app/#/";
+      // window.location.href = "http://localhost:9000/#/";
     };
 
     /**

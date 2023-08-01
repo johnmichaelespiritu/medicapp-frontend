@@ -13,21 +13,25 @@ const linksList = [
   {
     title: "Dashboard",
     icon: "grid_view",
+    // link: "http://localhost:9000/#/home/dashboard-information",
     link: "https://medicapp-system.netlify.app/#/home/dashboard-information",
   },
   {
     title: "Doctor Information",
     icon: "person",
+    // link: "http://localhost:9000/#/home/doctor-information",
     link: "https://medicapp-system.netlify.app/#/home/doctor-information",
   },
   {
     title: "Patient Information",
     icon: "personal_injury",
+    // link: "http://localhost:9000/#/home/patient-information",
     link: "https://medicapp-system.netlify.app/#/home/patient-information",
   },
   {
     title: "Consultation Information",
     icon: "description",
+    // link: "http://localhost:9000/#/home/consultation-information",
     link: "https://medicapp-system.netlify.app/#/home/consultation-information",
   },
 ];
@@ -86,6 +90,7 @@ export default defineComponent({
             showNotification($quasar, "positive", data.message, 200);
             // Redirect to the login page.
             window.location.href = "https://medicapp-system.netlify.app/#/";
+            // window.location.href = "http://localhost:9000/#/";
           }, 1000);
         }
       });
