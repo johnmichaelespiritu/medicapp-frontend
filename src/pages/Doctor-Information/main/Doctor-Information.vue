@@ -1,82 +1,78 @@
 <template>
   <!-- Main layout for displaying doctor information -->
   <q-layout view="lHh LpR fFf">
-    <!-- Header section -->
-    <q-header class="doctor-information-main-header">
-      <q-toolbar>
-        <!-- Title for the doctor information -->
-        <q-toolbar-title class="doctor-information-header-title">
-          Doctor Information
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
+    <div class="doctor-information-upper-section">
+      <!-- Search input for doctor list -->
+      <div class="doctor-information-search-wrapper">
+        <q-select
+          dense
+          fill-input
+          hide-selected
+          outlined
+          square
+          use-input
+          class="doctor-information-search-doctor"
+          color="orange-8"
+          dropdown-icon="false"
+          input-debounce="0"
+          option-label="doctor_name"
+          option-value="doctor_id"
+          placeholder="Search Doctor"
+          v-model="searchDoctor"
+          @blur="checkInput"
+          @filter="
+            (val, update, abort) => filterData('Doctor.php', val, update, abort)
+          "
+          @update:model-value="selectedDoctor"
+          :options="searchDoctorContents.length > 0 ? searchDoctorContents : []"
+        >
+          <template v-slot:prepend>
+            <q-icon name="search" color="black" />
+          </template>
 
-    <!-- Button to add a new doctor -->
-    <q-btn
-      flat
-      no-caps
-      class="doctor-information-add-doctor-button"
-      icon="add"
-      label="Add Doctor"
-      @click="addDoctor"
-    />
+          <template v-if="searchDoctor" v-slot:append>
+            <!-- Clear search button. -->
+            <q-btn
+              flat
+              round
+              class="clear-search-button cursor-pointer"
+              icon="clear"
+              @click="clearSearch"
+            />
+          </template>
 
-    <!-- Search input for doctor list -->
-    <q-select
-      dense
-      fill-input
-      hide-selected
-      outlined
-      square
-      use-input
-      class="doctor-information-search-doctor q-mx-lg"
-      color="orange-8"
-      dropdown-icon="false"
-      input-debounce="0"
-      option-label="doctor_name"
-      option-value="doctor_id"
-      placeholder="Search Doctor"
-      v-model="searchDoctor"
-      @blur="checkInput"
-      @filter="
-        (val, update, abort) => filterData('Doctor.php', val, update, abort)
-      "
-      @update:model-value="selectedDoctor"
-      :options="searchDoctorContents.length > 0 ? searchDoctorContents : []"
-    >
-      <template v-slot:prepend>
-        <q-icon name="search" color="black" />
-      </template>
+          <!-- No result template. -->
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-black"> No results </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
 
-      <template v-if="searchDoctor" v-slot:append>
-        <!-- Clear search button. -->
+      <div class="doctor-information-buttons-wrapper">
+        <!-- Button to add a new doctor -->
         <q-btn
           flat
+          dense
           round
-          class="clear-search-button cursor-pointer"
-          icon="clear"
-          @click="clearSearch"
+          class="doctor-information-add-doctor-button"
+          icon="add"
+          @click="addDoctor"
         />
-      </template>
 
-      <!-- No result template. -->
-      <template v-slot:no-option>
-        <q-item>
-          <q-item-section class="text-black"> No results </q-item-section>
-        </q-item>
-      </template>
-    </q-select>
-
-    <!-- Button to delete selected doctors -->
-    <q-btn
-      flat
-      dense
-      round
-      class="doctor-information-delete-button"
-      icon="delete"
-      :disable="!deleteMultipleDoctor.length"
-      @click="deleteDoctorInformation(deleteMultipleDoctor)"
-    />
+        <!-- Button to delete selected doctors -->
+        <q-btn
+          flat
+          dense
+          round
+          class="doctor-information-delete-button"
+          icon="delete"
+          :disable="!deleteMultipleDoctor.length"
+          @click="deleteDoctorInformation(deleteMultipleDoctor)"
+        />
+      </div>
+    </div>
 
     <!-- Main table to display doctor list -->
     <div class="doctor-information-main-table">

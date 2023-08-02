@@ -1,74 +1,32 @@
-.consultation-information-main-header {
-  color: white;
-  background-color: rgb(249, 152, 48);
-  position: relative;
-}
-.consultation-information-header-title {
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-}
-.consultation-information-add-consultation-button {
-  position: absolute;
-  top: 60px;
-  left: 10px;
-  width: 200px;
-  text-align: center;
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  background-color: rgb(20, 34, 73);
-  color: white;
+.consultation-information-upper-section {
+  display: flex;
+  padding: 15px;
+  justify-content: space-between;
 }
 .consultation-information-search-consultation {
-  position: absolute;
-  top: 60px;
-  right: 40px;
-  width: 500px;
-  transition: 1s;
-}
-.consultation-information-search-consultation-hidden {
-  position: absolute;
-  top: 58px;
-  right: 40px;
-  visibility: hidden;
-}
-.search {
-  position: absolute;
-  top: 60px;
-  right: 50px;
-  color: rgb(20, 34, 73);
-}
-.search-hidden {
-  position: absolute;
-  top: 60px;
-  left: 300px;
-  visibility: hidden;
-}
-@media (max-width: 740px) {
-  .consultation-information-search-consultation {
-    width: 95px;
-  }
+  width: 75%;
+  position: relative;
 }
 .clear-search-button {
-  position: relative;
   color: black;
-  left: 35px;
-}
-.consultation-information-main-table {
-  position: relative;
-  top: 60px;
-  left: 10px;
-  margin-right: 20px;
-}
-.consultation-information-delete-button {
   position: absolute;
-  top: 60px;
-  right: 20px;
-  color: rgb(20, 34, 73);
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
 }
+.consultation-information-add-consultation-button,
+.consultation-information-delete-button,
 .consultation-information-edit-button {
   color: rgb(20, 34, 73);
+  height: 5px;
+}
+.consultation-information-main-table {
+  width: 100%;
+  padding: 0 15px;
+}
+.consultation-information-search-wrapper {
+  width: 100%;
+}
+.consultation-information-buttons-wrapper {
+  display: flex;
 }

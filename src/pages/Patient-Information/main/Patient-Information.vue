@@ -1,82 +1,79 @@
 <template>
   <!-- Main layout for displaying patient information -->
   <q-layout view="lHh LpR fFf">
-    <!-- Header section -->
-    <q-header class="patient-information-main-header">
-      <q-toolbar>
-        <!-- Title for the patient information -->
-        <q-toolbar-title class="patient-information-header-title">
-          Patient Information
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
+    <div class="patient-information-upper-section">
+      <!-- Search input for patient list -->
+      <div class="patient-information-search-wrapper">
+        <q-select
+          dense
+          fill-input
+          hide-selected
+          outlined
+          square
+          use-input
+          class="patient-information-search-patient"
+          color="orange-8"
+          dropdown-icon="false"
+          input-debounce="0"
+          option-label="patient_name"
+          option-value="patient_id"
+          placeholder="Search Patient"
+          v-model="searchPatient"
+          @blur="checkInput"
+          @filter="
+            (val, update, abort) =>
+              filterData('Patient.php', val, update, abort)
+          "
+          @update:model-value="selectedPatient"
+          :options="searchContents.length > 0 ? searchContents : []"
+        >
+          <template v-slot:prepend>
+            <q-icon name="search" color="black" />
+          </template>
 
-    <!-- Button to add a new patient -->
-    <q-btn
-      flat
-      no-caps
-      class="patient-information-add-patient-button"
-      icon="add"
-      label="Add Patient"
-      @click="addPatient"
-    />
+          <template v-if="searchPatient" v-slot:append>
+            <!-- Clear search button. -->
+            <q-btn
+              flat
+              round
+              class="clear-search-button cursor-pointer"
+              icon="clear"
+              @click="clearSearch"
+            />
+          </template>
 
-    <!-- Search input for patient list -->
-    <q-select
-      dense
-      fill-input
-      hide-selected
-      outlined
-      square
-      use-input
-      class="patient-information-search-patient q-mx-lg"
-      color="orange-8"
-      dropdown-icon="false"
-      input-debounce="0"
-      option-label="patient_name"
-      option-value="patient_id"
-      placeholder="Search Patient"
-      v-model="searchPatient"
-      @blur="checkInput"
-      @filter="
-        (val, update, abort) => filterData('Patient.php', val, update, abort)
-      "
-      @update:model-value="selectedPatient"
-      :options="searchContents.length > 0 ? searchContents : []"
-    >
-      <template v-slot:prepend>
-        <q-icon name="search" color="black" />
-      </template>
+          <!-- No result template. -->
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-black"> No results </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
 
-      <template v-if="searchPatient" v-slot:append>
-        <!-- Clear search button. -->
+      <div class="patient-information-buttons-wrapper">
+        <!-- Button to add a new patient -->
         <q-btn
           flat
+          dense
           round
-          class="clear-search-button cursor-pointer"
-          icon="clear"
-          @click="clearSearch"
+          class="patient-information-add-patient-button"
+          icon="add"
+          @click="addPatient"
         />
-      </template>
 
-      <!-- No result template. -->
-      <template v-slot:no-option>
-        <q-item>
-          <q-item-section class="text-black"> No results </q-item-section>
-        </q-item>
-      </template>
-    </q-select>
-
-    <!-- Button to delete selected doctors -->
-    <q-btn
-      flat
-      dense
-      round
-      class="patient-information-delete-button"
-      icon="delete"
-      :disable="!deleteMultiplePatient.length"
-      @click="deletePatientInformation(deleteMultiplePatient)"
-    />
+        <!-- Button to delete selected doctors -->
+        <q-btn
+          flat
+          dense
+          round
+          class="patient-information-delete-button"
+          icon="delete"
+          :disable="!deleteMultiplePatient.length"
+          @click="deletePatientInformation(deleteMultiplePatient)"
+        />
+      </div>
+    </div>
 
     <!-- Main table to display patient list -->
     <div class="patient-information-main-table">

@@ -1,70 +1,32 @@
-.patient-information-main-header {
-  color: white;
-  background-color: rgb(249, 152, 48);
-  position: relative;
-}
-.patient-information-header-title {
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-}
-.patient-information-add-patient-button {
-  position: absolute;
-  top: 58px;
-  left: 10px;
-  width: 155px;
-  text-align: center;
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  background-color: rgb(20, 34, 73);
-  color: white;
+.patient-information-upper-section {
+  display: flex;
+  padding: 15px;
+  justify-content: space-between;
 }
 .patient-information-search-patient {
-  position: absolute;
-  top: 58px;
-  right: 40px;
-  width: 500px;
-}
-@media (max-width: 740px) {
-  .patient-information-search-patient {
-    width: 140px;
-  }
+  width: 75%;
+  position: relative;
 }
 .clear-search-button {
-  position: relative;
   color: black;
-  left: 35px;
-}
-.patient-information-main-table {
-  position: relative;
-  top: 60px;
-  left: 10px;
-  margin-right: 20px;
-}
-.patient-information-delete-button {
   position: absolute;
-  top: 60px;
-  right: 20px;
-  color: rgb(20, 34, 73);
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
 }
+.patient-information-add-patient-button,
+.patient-information-delete-button,
 .patient-information-edit-button {
   color: rgb(20, 34, 73);
+  height: 5px;
 }
-// /* CSS for screens smaller than 600px */
-// @media only screen and (max-width: 600px) {
-//   .patient-information-virtual-scroll {
-//     height: 500px; /* set desired height */
-//     overflow-y: scroll; /* add scrollbar if content overflows */
-//   }
-// }
-
-// /* CSS for screens larger than 600px */
-// @media only screen and (min-width: 1280) {
-//   .patient-information-virtual-scroll {
-//     height: 500px; /* set desired height */
-//     overflow-y: scroll; /* add scrollbar if content overflows */
-//   }
-// }
+.patient-information-main-table {
+  width: 100%;
+  padding: 0 15px;
+}
+.patient-information-search-wrapper {
+  width: 100%;
+}
+.patient-information-buttons-wrapper {
+  display: flex;
+}

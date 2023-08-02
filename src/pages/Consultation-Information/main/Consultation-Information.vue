@@ -1,85 +1,81 @@
 <template>
   <!-- Main layout for displaying consultation information -->
   <q-layout view="lHh LpR fFf">
-    <!-- Header section -->
-    <q-header class="consultation-information-main-header">
-      <q-toolbar>
-        <!-- Title for the consultation information -->
-        <q-toolbar-title class="consultation-information-header-title">
-          Consultation Information
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
+    <div class="consultation-information-upper-section">
+      <!-- Search input for consultation list -->
+      <div class="consultation-information-search-wrapper">
+        <q-select
+          dense
+          fill-input
+          hide-selected
+          outlined
+          square
+          use-input
+          class="consultation-information-search-consultation"
+          color="orange-8"
+          dropdown-icon="false"
+          input-debounce="0"
+          option-label="patient_name"
+          option-value="consultation_id"
+          placeholder="Search Consultation"
+          v-model="searchConsultation"
+          @blur="checkInput"
+          @filter="
+            (val, update, abort) =>
+              filterData('Consultation.php', val, update, abort)
+          "
+          @update:model-value="selectedConsultation"
+          :options="searchContents.length > 0 ? searchContents : []"
+        >
+          <template v-slot:prepend>
+            <q-icon name="search" color="black" />
+          </template>
 
-    <!-- Button to add a new consultation -->
-    <q-btn
-      flat
-      no-caps
-      class="consultation-information-add-consultation-button"
-      icon="add"
-      label="Add Consultation"
-      @click="addConsultation"
-    />
+          <template v-if="searchConsultation" v-slot:append>
+            <!-- Clear search button. -->
+            <q-btn
+              flat
+              round
+              class="clear-search-button cursor-pointer"
+              icon="clear"
+              @click="clearSearch()"
+            />
+          </template>
 
-    <!-- Search input for consultation list -->
-    <q-select
-      dense
-      fill-input
-      hide-selected
-      outlined
-      square
-      use-input
-      class="consultation-information-search-consultation q-mx-lg"
-      color="orange-8"
-      dropdown-icon="false"
-      input-debounce="0"
-      option-label="patient_name"
-      option-value="consultation_id"
-      placeholder="Search Consultation"
-      v-model="searchConsultation"
-      @blur="checkInput"
-      @filter="
-        (val, update, abort) =>
-          filterData('Consultation.php', val, update, abort)
-      "
-      @update:model-value="selectedConsultation"
-      :options="searchContents.length > 0 ? searchContents : []"
-    >
-      <template v-slot:prepend>
-        <q-icon name="search" color="black" />
-      </template>
+          <!-- No result template. -->
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="no-border text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
 
-      <template v-if="searchConsultation" v-slot:append>
-        <!-- Clear search button. -->
+      <div class="consultation-information-buttons-wrapper">
+        <!-- Button to add a new consultation -->
         <q-btn
           flat
+          dense
           round
-          class="clear-search-button cursor-pointer"
-          icon="clear"
-          @click="clearSearch()"
+          class="consultation-information-add-consultation-button"
+          icon="add"
+          @click="addConsultation"
         />
-      </template>
 
-      <!-- No result template. -->
-      <template v-slot:no-option>
-        <q-item>
-          <q-item-section class="no-border text-grey">
-            No results
-          </q-item-section>
-        </q-item>
-      </template>
-    </q-select>
-
-    <!-- Button to delete selected consultations -->
-    <q-btn
-      flat
-      dense
-      round
-      class="consultation-information-delete-button"
-      icon="delete"
-      :disable="!deleteMultipleConsultation.length"
-      @click="deleteConsultationInformation(deleteMultipleConsultation)"
-    />
+        <!-- Button to delete selected consultations -->
+        <q-btn
+          flat
+          dense
+          round
+          class="consultation-information-delete-button"
+          icon="delete"
+          :disable="!deleteMultipleConsultation.length"
+          @click="deleteConsultationInformation(deleteMultipleConsultation)"
+        />
+      </div>
+    </div>
 
     <!-- Main table to display consultation list -->
     <div class="consultation-information-main-table">
