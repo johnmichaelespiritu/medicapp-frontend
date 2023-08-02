@@ -1,4 +1,5 @@
 import { computed } from "vue";
+import { trigger } from "./Medicapp.js";
 
 // An array of strings representing gender options available in the application.
 export const genderOptions = ["Male", "Female", "Others"];
@@ -13,6 +14,23 @@ export const statuses = [
   "No Show",
   "Follow-up",
 ];
+
+/*
+ * Retrieve the active menu title from the local storage and export it.
+ * If the active menu title is not present in the local storage, the 'activeMenu' variable will be set to 'null'.
+ */
+export const activeMenu = localStorage.getItem("activeMenu");
+
+/**
+ * Set the active menu title and update it in the local storage.
+ * @param {string} title - The title of the active menu to be set.
+ */
+export const setActiveMenu = (title) => {
+  // Set the 'activeMenu' variable to the provided title.
+  trigger.value.activeMenu = title;
+  // Update the active menu title in the local storage.
+  localStorage.setItem("activeMenu", title);
+};
 
 /**
  * rules
