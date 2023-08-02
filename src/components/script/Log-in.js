@@ -129,6 +129,7 @@ export default {
           } else {
             // Show success notification for success logging in.
             showNotification($quasar, "positive", data.message, 200);
+            localStorage.setItem("activeMenu", "Dashboard");
             setTimeout(() => {
               // Redirect to the dashboard information page.
               window.location.href =
@@ -136,12 +137,10 @@ export default {
               // window.location.href =
               //   "http://localhost:9000/#/home/dashboard-information";
               location.reload();
-              trigger.value.activeMenu = "Dashboard";
             }, 1000);
           }
         });
       }
-      trigger.value.activeMenu = null;
     };
 
     /**
