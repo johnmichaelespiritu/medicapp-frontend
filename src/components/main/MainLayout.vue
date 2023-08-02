@@ -2,7 +2,7 @@
   <!-- Main Layout -->
   <q-layout view="lHh LpR fFf" class="main-layout">
     <!-- Main Header -->
-    <q-header class="main-header" bordered fixed>
+    <q-header class="main-header">
       <!-- Toolbar with Menu, User Name, and Logout Button -->
       <q-toolbar>
         <!-- Menu Button -->
