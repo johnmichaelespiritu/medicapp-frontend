@@ -15,6 +15,11 @@
           @click="toggleLeftDrawer"
         />
 
+        <!-- Display Page Title -->
+        <q-toolbar-title class="main-page">
+          {{ trigger.activeMenu }}
+        </q-toolbar-title>
+
         <!-- Display User Name -->
         <q-toolbar-title class="main-user-name">
           {{ userName }}
