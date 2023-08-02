@@ -1,16 +1,6 @@
 <template>
   <!-- Main layout for displaying dashboard information -->
   <q-layout view="lHh LpR fFf">
-    <!-- Header section -->
-    <q-header class="dashboard-information-main-header">
-      <q-toolbar>
-        <!-- Title for the dashboard information -->
-        <q-toolbar-title class="dashboard-information-header-title">
-          Dashboard Information
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
-
     <div
       class="dashboard-details full-width row justify-evenly items-start content-start"
     >
