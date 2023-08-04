@@ -254,7 +254,7 @@ export const filterData = (path, val, update, abort) => {
   // Check if the search value 'val' is not empty.
   if (val.length > 0) {
     // Create a payload object with the search path and parameters.
-    let payload = {
+    const payload = {
       path: `${baseBackendURL}${path}?token=${encodeURIComponent(token.token)}`,
       params: {
         searchKeyword: val,
@@ -265,13 +265,20 @@ export const filterData = (path, val, update, abort) => {
     update(() => {
       // Perform the search using 'getSearchResult' function with the generated payload.
       getSearchResult(payload).then((data) => {
-        // Check if the search result is for "doctor".
-        if (data.search === "doctor") {
-          // If the search is for "doctor", update 'searchDoctorContents' variable with the search data.
-          searchDoctorContents.value = data.data;
+        // Check if the status is success.
+        if (data.status === "success") {
+          // Check if the search result is for "doctor".
+          if (data.search === "doctor") {
+            // If the search is for "doctor", update 'searchDoctorContents' variable with the search data.
+            searchDoctorContents.value = data.data;
+          } else {
+            // Otherwise, update 'searchContents' variable with the search data.
+            searchContents.value = data.data;
+          }
         } else {
-          // Otherwise, update 'searchContents' variable with the search data.
-          searchContents.value = data.data;
+          // Otherwise, reset the array for doctor contents and other contents.
+          searchDoctorContents.value = [];
+          searchContents.value = [];
         }
       });
     });
