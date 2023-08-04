@@ -74,42 +74,12 @@ export default {
         field: "patient_age",
         sortable: true,
       },
-      // {
-      //   name: "patient_home_address",
-      //   align: "center",
-      //   label: "Home Address",
-      //   field: "patient_home_address",
-      // },
       {
         name: "patient_contact_number",
         align: "center",
         label: "Contact Number",
         field: "patient_contact_number",
       },
-      // {
-      //   name: "complaints",
-      //   align: "center",
-      //   label: "Complaints",
-      //   field: "complaints",
-      //   classes: "ellipsis",
-      //   style: "max-width: 50px",
-      // },
-      // {
-      //   name: "diagnosis",
-      //   align: "center",
-      //   label: "Diagnosis",
-      //   field: "diagnosis",
-      //   classes: "ellipsis",
-      //   style: "max-width: 50px",
-      // },
-      // {
-      //   name: "treatment",
-      //   align: "center",
-      //   label: "Treatment",
-      //   field: "treatment",
-      //   classes: "ellipsis",
-      //   style: "max-width: 50px",
-      // },
       {
         name: "status",
         align: "center",
@@ -218,6 +188,7 @@ export default {
      */
     const clearSearch = () => {
       searchConsultation.value = null;
+      searchContents.value = [];
     };
 
     /**
@@ -227,6 +198,7 @@ export default {
     const checkInput = (e) => {
       if (e.target.value === "") {
         searchConsultation.value = null;
+        searchContents.value = [];
       }
     };
 

@@ -169,6 +169,7 @@ export default {
      */
     const clearSearch = () => {
       searchPatient.value = null;
+      searchContents.value = [];
     };
 
     /**
@@ -178,6 +179,7 @@ export default {
     const checkInput = (e) => {
       if (e.target.value === "") {
         searchPatient.value = null;
+        searchContents.value = [];
       }
     };
 
