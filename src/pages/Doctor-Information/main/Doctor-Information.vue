@@ -59,7 +59,15 @@
           class="doctor-information-add-doctor-button"
           icon="add"
           @click="addDoctor"
-        />
+        >
+          <q-tooltip
+            class="bg-black"
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            Add Doctor
+          </q-tooltip>
+        </q-btn>
 
         <!-- Button to delete selected doctors -->
         <q-btn
@@ -101,7 +109,15 @@
               class="doctor-information-edit-button"
               icon="edit"
               @click="updateDoctor(props.row.doctor_id)"
-            ></q-btn>
+            >
+              <q-tooltip
+                class="bg-black"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                Update Doctor
+              </q-tooltip>
+            </q-btn>
           </q-td>
         </template>
       </q-table>

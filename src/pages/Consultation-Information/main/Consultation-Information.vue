@@ -62,7 +62,15 @@
           class="consultation-information-add-consultation-button"
           icon="add"
           @click="addConsultation"
-        />
+        >
+          <q-tooltip
+            class="bg-black"
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            Add Consultation
+          </q-tooltip>
+        </q-btn>
 
         <!-- Button to delete selected consultations -->
         <q-btn
@@ -104,7 +112,15 @@
               class="consultation-information-edit-button"
               icon="edit"
               @click="updateConsultation(props.row.consultation_id)"
-            ></q-btn>
+            >
+              <q-tooltip
+                class="bg-black"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                Update Consultation
+              </q-tooltip></q-btn
+            >
           </q-td>
         </template>
       </q-table>
