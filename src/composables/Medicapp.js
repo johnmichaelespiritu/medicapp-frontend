@@ -4,6 +4,10 @@ import { ref, readonly } from "vue";
 const baseBackendURL =
   "https://medicappsystem.000webhostapp.com/medicapp-backend/";
 
+// Debounce variable for search query.
+let debounceTimer;
+
+// An array container holding the results of the searched data.
 export const searchContents = ref([]);
 
 // Authentication token retrieved from localStorage.
@@ -261,27 +265,34 @@ export const filterData = (path, val, update, abort) => {
       },
     };
 
-    // Call the 'update' function to initiate the update of 'searchDoctorContents' or 'searchContents'.
-    update(() => {
-      // Perform the search using 'getSearchResult' function with the generated payload.
-      getSearchResult(payload).then((data) => {
-        // Check if the status is success.
-        if (data.status === "success") {
-          // Check if the search result is for "doctor".
-          if (data.search === "doctor") {
-            // If the search is for "doctor", update 'searchDoctorContents' variable with the search data.
-            searchDoctorContents.value = data.data;
+    // Clear any existing debounce timer.
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
+
+    // Set a new debounce timer.
+    debounceTimer = setTimeout(() => {
+      update(() => {
+        // Perform the search using 'getSearchResult' function with the generated payload.
+        getSearchResult(payload).then((data) => {
+          // Check if the status is success.
+          if (data.status === "success") {
+            // Check if the search result is for "doctor".
+            if (data.search === "doctor") {
+              // If the search is for "doctor", update 'searchDoctorContents' variable with the search data.
+              searchDoctorContents.value = data.data;
+            } else {
+              // Otherwise, update 'searchContents' variable with the search data.
+              searchContents.value = data.data;
+            }
           } else {
-            // Otherwise, update 'searchContents' variable with the search data.
-            searchContents.value = data.data;
+            // Otherwise, reset the array for doctor contents and other contents.
+            searchDoctorContents.value = [];
+            searchContents.value = [];
           }
-        } else {
-          // Otherwise, reset the array for doctor contents and other contents.
-          searchDoctorContents.value = [];
-          searchContents.value = [];
-        }
+        });
       });
-    });
+    }, 500); // Adjust the debounce duration as needed (in milliseconds).
   } else {
     // If the search value 'val' is empty, call the 'abort' function to abort the update.
     abort();
