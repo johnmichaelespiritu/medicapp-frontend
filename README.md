@@ -1,6 +1,6 @@
-# MedicApp (medicapp-frontend)
+# Medicapp
 
-A Patient Information Management System
+A Patient Information System
 
 ## Install the dependencies
 ```bash
