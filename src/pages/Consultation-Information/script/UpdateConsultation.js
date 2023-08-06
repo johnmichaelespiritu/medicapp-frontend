@@ -4,7 +4,6 @@ import {
   validateFields,
   compareInformation,
   showNotification,
-  statuses,
   useSelectedRecord,
   rules,
 } from "src/composables/Utils.js";
@@ -35,6 +34,16 @@ export default {
       { key: "treatment", label: "Treatment" },
       { key: "status", label: "Status" },
       { key: "consultation_date", label: "Consultation Date" },
+    ];
+
+    // An array of strings representing different statuses for consultations in the application.
+    const statuses = [
+      "In Progress",
+      "Completed",
+      "Cancelled",
+      "Rescheduled",
+      "No Show",
+      "Follow-up",
     ];
 
     // Object to store consultation form data.
