@@ -107,7 +107,13 @@
                 dense
                 outlined
                 square
-                class="bg-white"
+                :class="
+                  consultationField.key === 'patient_age' ||
+                  consultationField.key === 'patient_home_address' ||
+                  consultationField.key === 'patient_contact_number'
+                    ? 'bg-white q-mb-md'
+                    : 'bg-white'
+                "
                 color="orange-8"
                 v-model.trim="consultationForm[consultationField.key]"
                 :type="
