@@ -4,17 +4,6 @@ import { trigger } from "./Medicapp.js";
 // An array of strings representing gender options available in the application.
 export const genderOptions = ["Male", "Female", "Others"];
 
-// An array of strings representing different statuses for consultations in the application.
-export const statuses = [
-  "Scheduled",
-  "In Progress",
-  "Completed",
-  "Cancelled",
-  "Rescheduled",
-  "No Show",
-  "Follow-up",
-];
-
 /*
  * Retrieve the active menu title from the local storage and export it.
  * If the active menu title is not present in the local storage, the 'activeMenu' variable will be set to 'null'.
