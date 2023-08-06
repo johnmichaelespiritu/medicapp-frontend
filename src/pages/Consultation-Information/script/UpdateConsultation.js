@@ -162,7 +162,9 @@ export default {
           if (selectedPatient.value) {
             consultationForm.value.patient_id =
               selectedPatient.value.patient_id;
-          } else {
+          }
+
+          if (selectedDoctor.value) {
             consultationForm.value.doctor_id = selectedDoctor.value.doctor_id;
           }
 
