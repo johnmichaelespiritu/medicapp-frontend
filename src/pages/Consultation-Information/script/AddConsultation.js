@@ -4,7 +4,6 @@ import {
   validateFields,
   resetForm,
   showNotification,
-  statuses,
   useSelectedRecord,
   rules,
 } from "src/composables/Utils.js";
@@ -32,7 +31,6 @@ export default {
       { key: "complaints", label: "Complaints" },
       { key: "diagnosis", label: "Diagnosis" },
       { key: "treatment", label: "Treatment" },
-      { key: "status", label: "Status" },
       { key: "consultation_date", label: "Consultation Date" },
     ];
 
@@ -149,7 +147,6 @@ export default {
       consultationFields,
       consultationForm,
       searchDoctorContents,
-      statuses,
       trigger,
       searchContents,
       rules,
