@@ -92,7 +92,7 @@
         row-key="patient_id"
         selection="multiple"
         v-model:selected="deleteMultiplePatient"
-        :columns="columns"
+        :columns="visibleColumns"
         :rows="patientListPage"
         :loading="loading"
         :selected-rows-label="getSelectedPatient"

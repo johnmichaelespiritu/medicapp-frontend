@@ -94,7 +94,7 @@
         row-key="consultation_id"
         selection="multiple"
         v-model:selected="deleteMultipleConsultation"
-        :columns="columns"
+        :columns="visibleColumns"
         :rows="consultationListPage"
         :loading="loading"
         :selected-rows-label="getSelectedConsultation"

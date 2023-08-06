@@ -91,7 +91,7 @@
         row-key="doctor_id"
         selection="multiple"
         v-model:selected="deleteMultipleDoctor"
-        :columns="columns"
+        :columns="visibleColumns"
         :rows="doctorListPage"
         :loading="loading"
         :selected-rows-label="getSelectedDoctor"
