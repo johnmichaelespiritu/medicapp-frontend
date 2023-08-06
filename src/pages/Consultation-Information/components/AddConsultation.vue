@@ -87,27 +87,19 @@
               </q-select>
             </template>
 
-            <template v-else-if="consultationField.key === 'status'">
-              <!-- Select input for consultation status. -->
-              <q-select
-                dense
-                outlined
-                square
-                class="bg-white"
-                color="orange-8"
-                v-model="consultationForm[consultationField.key]"
-                :options="statuses"
-                :rules="[(val) => !!val || '']"
-              />
-            </template>
-
             <template v-else>
               <!-- Default input for other consultation fields (patient age, patient home address, patient contact number, complaints, diagnosis, treatment, consultation date). -->
               <q-input
                 dense
                 outlined
                 square
-                class="bg-white"
+                :class="
+                  consultationField.key === 'patient_age' ||
+                  consultationField.key === 'patient_home_address' ||
+                  consultationField.key === 'patient_contact_number'
+                    ? 'bg-white q-mb-md'
+                    : 'bg-white'
+                "
                 color="orange-8"
                 v-model.trim="consultationForm[consultationField.key]"
                 :type="
