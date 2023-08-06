@@ -1,4 +1,4 @@
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useQuasar } from "quasar";
 import AddConsultation from "src/pages/Consultation-Information/components/AddConsultation.vue";
 import UpdateConsultation from "src/pages/Consultation-Information/components/UpdateConsultation.vue";
@@ -36,6 +36,7 @@ export default {
     const searchConsultation = ref(null);
     const filterStatus = ref(null);
     const showSelect = ref(false);
+    const screenWidth = ref(window.innerWidth);
 
     // Array of consultation statuses.
     const statuses = ref([
@@ -53,7 +54,7 @@ export default {
       {
         name: "patient_name",
         required: true,
-        label: "Name",
+        label: "Patient Name",
         align: "center",
         field: (row) => row.name,
         format: (val) => `${val}`,
@@ -94,6 +95,40 @@ export default {
       },
       { name: "action", align: "center", label: "Action", field: "action" },
     ];
+
+    // visibleColumns is a reactive reference to the columns that are currently visible in the table.
+    const visibleColumns = ref(
+      screenWidth.value < 768
+        ? columns.filter((col) =>
+            ["patient_name", "status", "consultation_date", "action"].includes(
+              col.name
+            )
+          )
+        : columns
+    );
+
+    /**
+     * handleResize is a function that is called when the window is resized.
+     * It updates the visibleColumns based on the current window width.
+     * If the window width is less than 768 pixels, it filters the columns to only display specific ones.
+     */
+    const handleResize = () => {
+      // Update the screenWidth value with the current window width.
+      screenWidth.value = window.innerWidth;
+
+      // Check if the window width is less than 768 pixels.
+      if (screenWidth.value < 768) {
+        // If the window width is less than 768 pixels, only display specific columns (doctor_name, specialization, and action).
+        visibleColumns.value = columns.filter((col) =>
+          ["patient_name", "status", "consultation_date", "action"].includes(
+            col.name
+          )
+        );
+      } else {
+        // If the window width is 768 pixels or more, display all columns.
+        visibleColumns.value = columns;
+      }
+    };
 
     /**
      * Adds a new consultation.
@@ -235,11 +270,21 @@ export default {
 
     /**
      * Executes the specified function when the component is mounted to the DOM.
-     * In this case, it calls the `getAllDataList` function with the parameters "Consultation.php" and `consultation`.
-     * This is used to fetch all the consultation lists when the component is first rendered.
      */
     onMounted(() => {
+      // Get all the data list from the server for consultations and store it in the 'consultation' variable.
       getAllDataList("Consultation.php", consultation);
+
+      // Add an event listener to the window object to detect resize events and call the handleResize function.
+      window.addEventListener("resize", handleResize);
+    });
+
+    /**
+     * Executes the specified function before the component is unnmounted from the DOM.
+     */
+    onBeforeUnmount(() => {
+      // Remove the event listener for resize events when the component is about to be unmounted.
+      window.removeEventListener("resize", handleResize);
     });
 
     // Return the reactive references and functions.
@@ -255,11 +300,12 @@ export default {
       statuses,
       trigger,
       searchContents,
+      visibleColumns,
+      getSelectedConsultation,
       addConsultation,
       clearSearch,
       checkInput,
       deleteConsultationInformation,
-      getSelectedConsultation,
       selectedConsultation,
       updateConsultation,
       filterData,

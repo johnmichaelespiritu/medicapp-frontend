@@ -1,4 +1,4 @@
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useQuasar } from "quasar";
 import AddPatient from "src/pages/Patient-Information/components/AddPatient.vue";
 import UpdatePatient from "src/pages/Patient-Information/components/UpdatePatient.vue";
@@ -34,6 +34,7 @@ export default {
     const loading = ref(false);
     const deleteMultiplePatient = ref([]);
     const searchPatient = ref(null);
+    const screenWidth = ref(window.innerWidth);
 
     // Configuration for the columns in the patient table.
     const columns = [
@@ -80,6 +81,36 @@ export default {
       },
       { name: "action", align: "center", label: "Action", field: "action" },
     ];
+
+    // visibleColumns is a reactive reference to the columns that are currently visible in the table.
+    const visibleColumns = ref(
+      screenWidth.value < 768
+        ? columns.filter((col) =>
+            ["patient_name", "patient_age", "action"].includes(col.name)
+          )
+        : columns
+    );
+
+    /**
+     * handleResize is a function that is called when the window is resized.
+     * It updates the visibleColumns based on the current window width.
+     * If the window width is less than 768 pixels, it filters the columns to only display specific ones.
+     */
+    const handleResize = () => {
+      // Update the screenWidth value with the current window width.
+      screenWidth.value = window.innerWidth;
+
+      // Check if the window width is less than 768 pixels.
+      if (screenWidth.value < 768) {
+        // If the window width is less than 768 pixels, only display specific columns (doctor_name, specialization, and action).
+        visibleColumns.value = columns.filter((col) =>
+          ["patient_name", "patient_age", "action"].includes(col.name)
+        );
+      } else {
+        // If the window width is 768 pixels or more, display all columns.
+        visibleColumns.value = columns;
+      }
+    };
 
     /**
      * Adds a new patient.
@@ -216,11 +247,21 @@ export default {
 
     /**
      * Executes the specified function when the component is mounted to the DOM.
-     * In this case, it calls the `getAllDataList` function with the parameters "Patient.php" and `patient`.
-     * This is used to fetch all the patient lists when the component is first rendered.
      */
     onMounted(() => {
+      // Get all the data list from the server for patients and store it in the 'patient' variable.
       getAllDataList("Patient.php", patient);
+
+      // Add an event listener to the window object to detect resize events and call the handleResize function.
+      window.addEventListener("resize", handleResize);
+    });
+
+    /**
+     * Executes the specified function before the component is unnmounted from the DOM.
+     */
+    onBeforeUnmount(() => {
+      // Remove the event listener for resize events when the component is about to be unmounted.
+      window.removeEventListener("resize", handleResize);
     });
 
     // Return the reactive references and functions.
@@ -233,10 +274,11 @@ export default {
       searchPatient,
       patientListPage,
       searchContents,
+      visibleColumns,
+      getSelectedPatient,
       addPatient,
       deletePatientInformation,
       updatePatient,
-      getSelectedPatient,
       clearSearch,
       checkInput,
       selectedPatient,
