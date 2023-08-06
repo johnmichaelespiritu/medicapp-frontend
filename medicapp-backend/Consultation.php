@@ -137,7 +137,7 @@ class Consultation extends DB
                 'complaints' => $payload['complaints'],
                 'diagnosis' => $payload['diagnosis'],
                 'treatment' => $payload['treatment'],
-                'status' => $payload['status'],
+                'status' => 'Scheduled',
                 'consultation_date' => $payload['consultation_date']
             );
 
