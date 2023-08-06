@@ -4,6 +4,10 @@
 
 Medicapp is a web-based patient information management system designed to efficiently manage and maintain patient-related data in a healthcare setting. This system provides an easy-to-use interface for doctors and administrators to handle various aspects of patient information, including managing doctor profiles, patient records, and consultation details. The application aims to streamline the administrative processes and improve patient care by facilitating quick access to accurate information.
 
+## Website
+
+Visit my web application [here](https://medicapp-system.netlify.app/#/).
+
 ## Installation
 
 ### Clone the repository:
